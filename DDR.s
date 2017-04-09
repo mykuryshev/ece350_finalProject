@@ -62,6 +62,7 @@ j wait
 #NEED TO DETERMINE TIMING AND SUCH FOR IDLE’s AND WAIT’s
 wait: #used while waiting for game selection
 #jal checkStart #maybe on press enter or such, then branch to start
+j inLevel #checkStart should set to start, but this fills for now, menu sort of last thing needed for us
 #jal checkOptions #NEED to determine the options and where they’re stored
 j wait
 
