@@ -44,14 +44,17 @@ main:
 #     __      __     __      __
 #    |21 |   |22 |  |23 |   |24 |    //$9 should store 25’s ‘state’ and work backwords to not overwrite
 
+#with $9 base a 1000, and 24 cells, our cells go from 976 to 999
+
 start:
 add $1, $0, 1 # $1 fixed for hit==1
 add $2, $0, 2 # $2 fixed for miss==2
 add $3, $0, $0 #set $3, score to 0
 add $8, $0, $0
 add $9, $0, $0
+addi $9, 1000 #just need a memory holder space
 add $27, $0, $0 #can just have user vary $27 to speed up or slow down
-addi $27, 100000000 #100 mil for couple second cycles? Math tricky
+addi $27, 100000000 #100 mil for second or so cycles wiht all else accounted for? Math tricky
 add $28, $0, $0 #initialize counter to zero
 add $29, $0, 24 #set numCells to 24, 4 columns, 6 rows
 jal initializeboard
@@ -66,22 +69,27 @@ j inLevel #checkStart should set to start, but this fills for now, menu sort of 
 #jal checkOptions #NEED to determine the options and where they’re stored
 j wait
 
+#this is all assuming we can set an image to an area solely of a single stored
+#register value and place in memory
 initializeboard:
 sw $2, -1($9) #NEED to store empty states (2’s) in all positions of the board in memory
+addi $9, -1
 addi $8, 1
-beq $8, $29 #once all array spots filled, we are set
+beq $8, $29, initializeboard #once all array spots filled, we are set
 jr $31
 
 #general in level structure, NEED to determine how to wait long enough for playability
 inLevel:
 add $28, $0, $0 #reset counter
+add $9, $0, $0 #reset base cell's position in memory
+addi $9, 1000 
 jal genArrows #NEED to determine how we want to create arrows, to beat, etc.? 
 jal moveArrows #NEED to figure out (beq $blockSpace, $1, set blockspace to $2, row below to $1 to empty and fill below)
 #jal playSong #NEEd, when we implement song
 jal checkMiss #NEED, when block reaches end without an input, check and set score down
 jal genRemoveArrow #NEED to figure out (beq $botRowBlockSpace, $1, remove, need beq or workaround)
 jal updateScore #NEED to determine where it’s overwritten/stored, whatnot
-jal idle 
+j idle
 j inLevel
 
 idle:
@@ -152,17 +160,12 @@ bne $10, $2, scoreDown
 add $7, $0, $0
 jr $31
 
+#how to return to place in memory from a branch???
+#do we need to change som eimplementation for that?
 scoreUp:
 addi $3, 100 #arbitrarily adding 100 to score for a hit
-jr $31 
+jr $31 #??
 
 scoreDown: 
 addi $3, -100 #arbitrarily subtracting 100 to score on miss (can also lose a life or such)
-jr $31
-
-
-
-
-# 6x4 grid for DDR, 
-# Ask about non bloc image displays
-
+jr $31 #??
