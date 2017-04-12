@@ -1,7 +1,5 @@
 module vga_controller(iRST_n,
                       iVGA_CLK,
-							 switchy0,
-							 switchy1,
                       oBLANK_n,
                       oHS,
                       oVS,
@@ -11,7 +9,7 @@ module vga_controller(iRST_n,
 
 	
 input iRST_n;
-input iVGA_CLK, switchy1, switchy0;
+input iVGA_CLK;
 output reg oBLANK_n;
 output reg oHS;
 output reg oVS;
@@ -33,7 +31,7 @@ video_sync_generator LTM_ins (.vga_clk(iVGA_CLK),
                               .HS(cHS),
                               .VS(cVS));
 ////
-////Addresss generator
+////Addresss generator: Unless reset, update pixels on VGA one by one from 0 up to 2^19
 always@(posedge iVGA_CLK,negedge iRST_n)
 begin
   if (!iRST_n)
@@ -43,32 +41,23 @@ begin
   else if (cBLANK_n==1'b1)
      ADDR<=ADDR+1;	
 end
+
+
 //////////////////////////
-//////INDEX addr.
+//Image Data: Looks at the BIG vga memory file and outputs the color table index for the pixel being updated currently
+//Can change the file that img_data module looks at by changing its source code in the defparam section
+//See if we can extend dmem to be at least 2^19 locations, and make img_data use the first 307200 words of dmem
+//If so, then treat the first 307200 spots in dmem like VGAMem; vga controller will just use the bottom 8 bits of every word in those dmem spots
+//If not, will need to create instructions for writes to VGAMem
+
 assign VGA_CLK_n = ~iVGA_CLK;
-/*img_data	img_data_inst (
+img_data	img_data_inst (
 	.address ( ADDR ),
 	.clock ( VGA_CLK_n ),
 	.q ( index )
 	);
-*/
 
-always@(*)
-begin
-  
-	if (~switchy1 & ~switchy0)
-		index = 8'd0;
-	else if (~switchy1 & switchy0)
-		index = 8'd1;
-	else if (switchy1 & ~switchy0)
-		index = 8'd2;
-	else if (switchy1 & switchy0)
-		index = 8'd3;
 
-end
-	
-///////////////////////
-//////Add switch-input logic here
 	
 //////Color table output
 img_index	img_index_inst (
@@ -77,12 +66,17 @@ img_index	img_index_inst (
 	.q ( bgr_data_raw)
 	);	
 //////
+
+
+
 //////latch valid data at falling edge;
 always@(posedge VGA_CLK_n) bgr_data <= bgr_data_raw;
 assign b_data = bgr_data[23:16];
 assign g_data = bgr_data[15:8];
 assign r_data = bgr_data[7:0]; 
 ///////////////////
+
+
 //////Delay the iHD, iVD,iDEN for one clock cycle;
 always@(negedge iVGA_CLK)
 begin
