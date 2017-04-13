@@ -63,8 +63,6 @@ add $1, $0, 1 # $1 fixed for hit==1
 add $2, $0, 2 # $2 fixed for miss==2
 add $3, $0, $0 #set $3, score to 0
 add $8, $0, $0
-add $9, $0, $0 
-add $14, $0, $0
 add $22, $0, $0 #don't draw left yet
 add $23, $0, $0 #don't draw up yet
 add $24, $0, $0 #don't draw right yet
@@ -72,21 +70,16 @@ add $25, $0, $0 #don't draw down yet
 
 #NEED TO PICK SPOTS IN MEMORY FOR ARROW IMAGES
 #if 50x50 pixels, then need 2500 total pixels for each
-add $15, $0, $0
-add $16, $0, $0
-add $17, $0, $0
-add $18, $0, $0
-addi $15, $15, 310000
-addi $16, $16, 320000
-addi $17, $17, 330000
-addi $18, $18, 340000
+addi $15, $0, 310000
+addi $16, $0, 320000
+addi $17, $0, 330000
+addi $18, $0, 340000
 
-addi $9, $9, 1000 #just need a memory holder space
-addi $14, $14, 50 #size of arrows in pixels
-add $27, $0, $0 #can just have user vary $27 to speed up or slow down
-addi $27, 100000000 #100 mil for second or so cycles wiht all else accounted for? Math tricky
+addi $9, $0, 1000 #just need a memory holder space
+addi $14, $0, 50 #size of arrows in pixels
+addi $27, $0, 100000000 #100 mil for second or so cycles wiht all else accounted for? Math tricky
 add $28, $0, $0 #initialize counter to zero
-add $29, $0, 24 #set numCells to 24, 4 columns, 6 rows
+addi $29, $0, 24 #set numCells to 24, 4 columns, 6 rows
 jal initializeboard
 # jal initsound #NEED if we go down this path
 # jal initUI #NEED
@@ -111,8 +104,7 @@ jr $31
 #general in level structure, NEED to determine how to wait long enough for playability
 inLevel:
 add $28, $0, $0 #reset counter
-add $9, $0, $0 #reset base cell's position in memory
-addi $9, $9, 1000 #base location for arrows
+addi $9, $0, 1000 #reset base location for arrows
 jal genArrows #NEED to determine how we want to create arrows, to beat, etc.? 
 #jal moveArrows #NEED to figure out (beq $blockSpace, $1, set blockspace to $2, row below to $1 to empty and fill below)
 #jal playSong #NEEd, when we implement song
