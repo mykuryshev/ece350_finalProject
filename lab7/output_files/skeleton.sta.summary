@@ -1,0 +1,137 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'clock'
+Slack : -23.694
+TNS   : -24560.742
+
+Type  : Slow 1200mV 85C Model Setup 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : -8.487
+TNS   : -44.832
+
+Type  : Slow 1200mV 85C Model Setup 'timer:processor_timer|count[0]'
+Slack : -2.330
+TNS   : -2.330
+
+Type  : Slow 1200mV 85C Model Hold 'timer:processor_timer|count[0]'
+Slack : 0.294
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'clock'
+Slack : 0.358
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.629
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Recovery 'clock'
+Slack : -6.409
+TNS   : -581.617
+
+Type  : Slow 1200mV 85C Model Removal 'clock'
+Slack : 1.447
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'clock'
+Slack : -3.000
+TNS   : -7268.139
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'timer:processor_timer|count[0]'
+Slack : -1.285
+TNS   : -1.285
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.459
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'clock'
+Slack : -21.773
+TNS   : -22438.221
+
+Type  : Slow 1200mV 0C Model Setup 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : -7.974
+TNS   : -42.185
+
+Type  : Slow 1200mV 0C Model Setup 'timer:processor_timer|count[0]'
+Slack : -2.009
+TNS   : -2.009
+
+Type  : Slow 1200mV 0C Model Hold 'timer:processor_timer|count[0]'
+Slack : 0.287
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'clock'
+Slack : 0.349
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.731
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Recovery 'clock'
+Slack : -5.866
+TNS   : -533.000
+
+Type  : Slow 1200mV 0C Model Removal 'clock'
+Slack : 1.404
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'clock'
+Slack : -3.000
+TNS   : -7185.947
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'timer:processor_timer|count[0]'
+Slack : -1.285
+TNS   : -1.285
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.281
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'clock'
+Slack : -12.085
+TNS   : -11286.011
+
+Type  : Fast 1200mV 0C Model Setup 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : -4.044
+TNS   : -21.228
+
+Type  : Fast 1200mV 0C Model Setup 'timer:processor_timer|count[0]'
+Slack : -0.765
+TNS   : -0.765
+
+Type  : Fast 1200mV 0C Model Hold 'timer:processor_timer|count[0]'
+Slack : 0.100
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'clock'
+Slack : 0.159
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.312
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Recovery 'clock'
+Slack : -2.765
+TNS   : -248.817
+
+Type  : Fast 1200mV 0C Model Removal 'clock'
+Slack : 0.451
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'clock'
+Slack : -3.000
+TNS   : -3985.199
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'timer:processor_timer|count[0]'
+Slack : -1.000
+TNS   : -1.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.182
+TNS   : 0.000
+
+------------------------------------------------------------

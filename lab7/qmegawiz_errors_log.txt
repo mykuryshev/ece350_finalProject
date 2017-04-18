@@ -1,0 +1,10 @@
+
+
+C:/Users/Saumya/Desktop/lab7/VGA_Audio_PLL.v
+
+Apr 13 05PM:06:40>: Error in CNX file format.
+
+Error messages are listed in file
+C:/Users/Saumya/Desktop/lab7/VGA_Audio_PLL.cnxerr.
+
+Can't create the custom megafunction variation file(s)

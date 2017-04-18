@@ -11,8 +11,7 @@ module skeleton(resetn,
 	VGA_R,   														//	VGA Red[9:0]
 	VGA_G,	 														//	VGA Green[9:0]
 	VGA_B,															//	VGA Blue[9:0]
-	CLOCK_50, 
-	vga_addr, vga_index);  													// 50 MHz clock
+	CLOCK_50);  													// 50 MHz clock
 		
 	////////////////////////	VGA	////////////////////////////
 	output			VGA_CLK;   				//	VGA Clock
@@ -54,12 +53,12 @@ module skeleton(resetn,
 	// UNCOMMENT FOLLOWING LINE AND COMMENT ABOVE LINE TO RUN AT 50 MHz
 	//assign clock = inclock;
 	
-	output[18:0] vga_addr;
-	output[7:0] vga_index;
+	//output[18:0] vga_addr;
+	//output[7:0] vga_index;
 	
 	// your processor
-	CP4_processor_sj166 myprocessor(.clock(clock), .reset(~resetn), /*ps2_key_pressed, ps2_out, lcd_write_en, lcd_write_data,*/ 
-												.dmem_data_in(debug_data_in), .dmem_address(debug_addr), .vga_address(vga_addr), .vga_out(vga_index));
+	//CP4_processor_sj166 myprocessor(.clock(clock), .reset(~resetn), /*ps2_key_pressed, ps2_out, lcd_write_en, lcd_write_data,*/ 
+	//											.dmem_data_in(debug_data_in), .dmem_address(debug_addr), .vga_address(vga_addr), .vga_out(vga_index));
 	
 	// keyboard controller for project
 	// PS2_Interface myps2(clock, resetn, ps2_clock, ps2_data, ps2_key_data, ps2_key_pressed, ps2_out);
@@ -92,9 +91,7 @@ module skeleton(resetn,
 								 .oVS(VGA_VS),
 								 .b_data(VGA_B),
 								 .g_data(VGA_G),
-								 .r_data(VGA_R), 
-								 .ADDR(vga_addr), 
-								 .index(vga_index));
+								 .r_data(VGA_R));
 	
 	
 endmodule

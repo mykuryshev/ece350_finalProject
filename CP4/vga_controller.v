@@ -5,7 +5,7 @@ module vga_controller(iRST_n,
                       oVS,
                       b_data,
                       g_data,
-                      r_data, ADDR, index);
+                      r_data);
 input iRST_n;
 input iVGA_CLK;
 output reg oBLANK_n;
@@ -14,10 +14,10 @@ output reg oVS;
 output [7:0] b_data;
 output [7:0] g_data;  
 output [7:0] r_data; 
-input[7:0] index;
+//input[7:0] index;
                        
 ///////// ////                     
-output reg [18:0] ADDR;
+reg [18:0] ADDR;
 reg [23:0] bgr_data;
 wire VGA_CLK_n;
 wire [7:0] index;
@@ -52,6 +52,8 @@ img_data	img_data_inst (
 	.q ( index )
 	);
 */
+
+assign index = 8'h00;
 	
 //////Color table output
 img_index	img_index_inst (

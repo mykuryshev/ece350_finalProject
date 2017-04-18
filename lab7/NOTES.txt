@@ -1,0 +1,5 @@
+-Looks like VGA is working overall
+-KEY0 button is a reset; will need to press this to get instructions to start executing
+-Probably good to doubly clock the vgamem, so it uses the vgaclock for reads
+-Implement a hardware timer that counts up for a large number of cycles and sends a register to 1 whenever it reaches its max value
+-> We can use this register as an interrupt in the MIPS code, and branch to different code locations when that register is high
