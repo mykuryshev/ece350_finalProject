@@ -45,6 +45,9 @@ module skeleton(resetn,
 	wire 	[31:0] lcd_write_data;
 	wire	[7:0]	 ps2_key_data;
 	wire			 ps2_key_pressed;
+	wire  [7:0]  debounced_ps2;
+	wire 			 upKey, leftKey, downKey, rightKey;
+	
 	wire	[7:0]	 ps2_out;
 	reg   [7:0] keypressy;	
 	
@@ -74,7 +77,11 @@ module skeleton(resetn,
 	end
 	
 	// lcd controller
-	lcd mylcd(clock, ~resetn, 1'b1, keypressy, lcd_data, lcd_rw, lcd_en, lcd_rs, lcd_on, lcd_blon);
+	lcd mylcd(clock, ~resetn, 1'b1, keypressy, debounced_ps2, lcd_rw, lcd_en, lcd_rs, lcd_on, lcd_blon);
+	
+	ps2_fsm my_ps2_psm(ps2_key_pressed, clock, ~resetn, ps2_key_data, debounced_ps2);
+	
+	ps2_handler handleps2(debounced_ps2, upKey, leftKey, downKey, rightKey);
 	
 	// example for sending ps2 data to the first two seven segment displays
 	Hexadecimal_To_Seven_Segment hex1(ps2_out[3:0], seg1);
