@@ -49,7 +49,6 @@ module skeleton(resetn,
 	
 	wire[18:0] vga_address;
 	wire[7:0] vga_index;
-
 	
 	// clock divider (by 5, i.e., 10 MHz)
 	pll div(CLOCK_50,inclock);
@@ -59,7 +58,7 @@ module skeleton(resetn,
 	//assign clock = inclock;
 	
 	// your processor
- CP4_processor_sj166 processor(.clock(clock), .reset(resetn), .vga_address(vga_address), .vga_out(vga_index));
+ CP4_processor_sj166 processor(.clock(clock), .reset(resetn), .vga_address(vga_address), .vga_out(vga_index), .vga_clock(VGA_CLK));
 	
 	// keyboard controller
 	PS2_Interface myps2(clock, resetn, ps2_clock, ps2_data, ps2_key_data, ps2_key_pressed, ps2_out);

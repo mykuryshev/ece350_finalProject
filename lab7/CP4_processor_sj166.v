@@ -1,4 +1,5 @@
-module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, vga_address, vga_out, sw_VGA, timer_out);
+module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, vga_address, vga_out,
+									vga_clock, sw_VGA, timer_out);
 
 	input 			clock, reset/*, ps2_key_pressed*/;
 	//input 	[7:0]	ps2_out;
@@ -270,7 +271,7 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 	//X Stage Control 
 	
 	wire take_blt = blt_x && ~alu1_LT && |alu1_out[31:0];
-	wire take_bne = bne_x && ~|alu1_out[31:0];
+	wire take_bne = bne_x && ~|alu1_out[31:0]; //BEQ
 	wire take_branch = take_blt || take_bne;
 	
 	wire take_bex = bex_x && alu1_NEQ;
@@ -355,8 +356,10 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 	output sw_VGA;
 	assign sw_VGA = ~opcode_M[4] && &opcode_M[3:0];
 	
-	vgamem myvgamem(.address_a(alu1out_M[18:0]), .address_b(vga_address), .clock(~clock), .data_a(dmem_data_in[7:0]), .data_b(dmem_data_in[7:0]),
-						 .wren_a(sw_VGA), .wren_b(1'b0),  .q_b(vga_out));
+	input vga_clock;
+	
+	vgamem_new myvgamem(.address_a(alu1out_M[18:0]), .address_b(vga_address), .inclock(~clock), .data_a(dmem_data_in[7:0]), .data_b(dmem_data_in[7:0]),
+						 .wren_a(sw_VGA), .wren_b(1'b0),  .q_b(vga_out), .outclock(vga_clock));
 	
 	
 	
@@ -1082,7 +1085,7 @@ module regfile_mod(
 	assign Reg_data[31:0] = 32'h00000000;
 	
 	//Register 29 is set to timer state!
-	assign Reg_data[959:929] = 31'd0;
+	assign Reg_data[959:929] = 31'b0000000000000000000000000000000;
 	assign Reg_data[928] = timer_state;
 	
 	///////////////////////////////////////////////////Setting up register 30, $rstatus///////////////////////////////////////////////////////////////////
