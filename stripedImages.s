@@ -32,8 +32,8 @@ noop
 noop 
 noop
 noop
-addi $2, $2, 590
-addi $5, $0, 0
+addi $2, $2, 591
+addi $5, $5, -49
 noop
 noop
 noop
@@ -53,15 +53,15 @@ noop
 noop
 noop
 noop
-addi $2, $0, 6001 #20 lines down on a 640 wide display
-addi $3, $0, 37999 #50 lines on a 640 wide display
+addi $2, $0, 6075 #20 lines down on a 640 wide display
+addi $3, $0, 38075 #50 lines on a 640 wide display
 noop
 noop
 noop
 noop
 noop
 
-loop:
+loop1:
 sw $1, 0($2)
 addi $2, $2, 2
 addi $5, $5, 2
@@ -70,13 +70,13 @@ noop
 noop
 noop
 noop
-blt $5, $4, loop 
+blt $5, $4, loop1 
 noop
 noop 
 noop
 noop
-addi $2, $2, 590
-addi $5, $0, 0
+addi $2, $2, 591
+addi $5, $5, -49
 noop
 noop
 noop
@@ -86,7 +86,6 @@ noop
 noop
 noop
 noop
-
 
 .data
 wow: .word 0x0000B504
