@@ -1,5 +1,81 @@
 .text
 main:
+noop #DDR
+
+noop #########################################################################################
+
+noop #MEMORY MAP
+noop #### Constants
+noop #Address => Value
+noop  ############# Constants $1(Address) and $2(Value)
+noop #      0 => constant holding number of processor cycles of idle time
+noop #      1 => constant representing lower boundary for key press
+noop #      2 => constant representing upper boundary for key press
+noop #      3 => initial draw location for left arrow
+noop #      4 => initial draw location for right arrow
+noop #      5 => initial draw location for up arrow 
+noop #      6 => initial draw location for down arrow
+noop #      7 => 1 (Left Arrow condition)
+noop #      8 => 2 (Right Arrow condition)
+noop #      9 => 3 (Up Arrow condition)
+noop #      10=> 4 (Down Arrow condition)
+noop ############## Bookeeping $3(Address) and $4(Value)
+noop #    100 =>  Keeps Score
+noop #    101 =>  Arrows Count
+noop #    102 =>  Miss Count
+ 
+noop ############## Arrows  $5(Address) and $6(Value)
+noop #    210 =>  Arrow 1 Type
+noop #    211 =>  Arrow 1 Location
+noop #    220 =>  Arrow 2 Type
+noop #    221 =>  Arrow 2 Location
+noop #    230 =>  Arrow 3 Type
+noop #    231 =>  Arrow 3 Location
+noop #    240 =>  Arrow 4 Type
+noop #    241 =>  Arrow 4 Location
+noop #    250 =>  Arrow 5 Type
+noop #    251 =>  Arrow 5 Location
+noop ############## Hard coded sequence of arrows
+noop #    500 =>  1
+noop #    501 =>  3
+noop #    502 =>  1
+noop #    503 =>  4
+noop #    504 =>  2
+noop #    505 =>  3
+noop #    506 =>  1
+noop #    507 =>  4
+noop #    508 =>  1
+noop #    509 =>  2
+noop #######################Arrow locale stored for build arrow##################
+noop #    600 =>  Arrow type used in build arrow since it is used by different modules
+noop #    601 =>  Arrow location used in build arrow 
+noop #    650 => memory slot to store OG jump and link register.
+noop ############# I/0 Locked Registers for Processor
+noop #    $20 => Left Arrow boolean
+noop #    $21 => Right Arrow boolean
+noop #    $22 => Up Arrow boolean
+noop #    $23 => Down Arrow boolean
+noop #    $24 => Reset boolean
+noop #    $25 => Enter boolean
+noop #    $26 => Random Number generator value
+noop #    $27 => Max size of image
+noop ############## Other Register reserved usage
+noop #     $7  => Register to hold image location for genarrow
+noop #     $8  => Register to hold image file stuff?????
+noop #     $9  => Holds count for Wait
+noop #     $10 => Holds max limit for Wait(Makes mem value 0 redundant tho)
+noop #     $11 => Pixel Counter for Row
+noop #     $12 => Pixel Counter for Column
+noop #     $14 => temp register for miscellaneous calculations e.g. arrowcount++
+noop #     $15 => Register to hold the selected type of arrow(To compare with arrows entering)
+noop #     $16 => Another temp arrow cause YOLO  
+noop #     $17 => Register to hold count for arrowgen
+noop #     $18 => Register to hold max count(50) 
+noop #     $19 => Register to hold hard coded sequcne memory locale
+noop #########################################################################################
+
+
+
 addi $1,$0,0
 addi $2,$0,6500 #####Processor cycles of Idle time
 sll  $2, $2, 4
