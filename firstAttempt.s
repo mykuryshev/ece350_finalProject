@@ -1,9 +1,7 @@
 .text
 main:
 noop #DDR
-
 noop #########################################################################################
-
 noop #MEMORY MAP
 noop #### Constants
 noop #Address => Value
@@ -23,7 +21,6 @@ noop ############## Bookeeping $3(Address) and $4(Value)
 noop #    100 =>  Keeps Score
 noop #    101 =>  Arrows Count
 noop #    102 =>  Miss Count
- 
 noop ############## Arrows  $5(Address) and $6(Value)
 noop #    210 =>  Arrow 1 Type
 noop #    211 =>  Arrow 1 Location
@@ -73,25 +70,22 @@ noop #     $17 => Register to hold count for arrowgen
 noop #     $18 => Register to hold max count(50) 
 noop #     $19 => Register to hold hard coded sequcne memory locale
 noop #########################################################################################
-
-
-
 addi $1,$0,0
-addi $2,$0,6500 #####Processor cycles of Idle time
+addi $2,$0,65000 #####Processor cycles of Idle time
 sll  $2, $2, 4
 add $10,$0,$2 #Register has max cycles also
 sw   $2,0($1)
-addi $2,$0,6700 #####Lower Boundary of Key PRess
+addi $2,$0,61000 #####Lower Boundary of Key PRess
 sw   $2,1($1)
-addi $2,$0,8400 #####Upper Boundary of Key press
+addi $2,$0,65000 #####Upper Boundary of Key press
 sw   $2,2($1)
-addi $2,$0,100 #####LEFT ARROW START LOCATION
+addi $2,$0,6000 #####LEFT ARROW START LOCATION
 sw   $2,3($1)
-addi $2,$0,300 #####RIGHT ARROW START LOCATION
+addi $2,$0,6100 #####RIGHT ARROW START LOCATION
 sw   $2,4($1)
-addi $2,$0,500 #####UP ARROW LOCATION
+addi $2,$0,6200 #####UP ARROW LOCATION
 sw   $2,5($1)
-addi $2,$0,700 #####DOWN ARROW LOCATION
+addi $2,$0,6300 #####DOWN ARROW LOCATION
 sw   $2,6($1)
 addi $2,$0,1 #####Value of 1(Left Arrow condition)
 sw   $2,7($1)
@@ -101,7 +95,6 @@ addi $2,$0,3 #####Value of 3(Up Arrow condition)
 sw   $2,9($1)
 addi $2,$0,4 #####Value of 4(Down Arrow Condition)
 sw   $2,10($1)
-
 addi $5,$0,500
 addi $6,$0,1 #Load first value as 1(hard coded sequence of arrows)
 sw   $6,0($5)
@@ -123,7 +116,6 @@ addi $6,$0,1 #Load first value as 1(hard coded sequence of arrows)
 sw   $6,8($5)
 addi $6,$0,2 #Load first value as 1(hard coded sequence of arrows)
 sw   $6,9($5)
-
 addi $3,$0,100
 addi $4,$0,0 #####SCORE
 sw   $4,0($3)
@@ -137,7 +129,6 @@ addi $9,$0,0 # Initial Wait count
 addi $17,$0,0 # Initial genarrow count
 addi $18,$0,51 # Max genarrow count
 addi $19,$0,500
-
 inLevel:
 addi $17,$17,1
 blt $17,$18,SkipgenArrows #If current count is less than the max than skip generate arrow 
@@ -153,6 +144,11 @@ noop
 noop
 noop
 SkipgenArrows:
+noop
+noop
+noop
+noop
+noop
 jal moveArrows #Move the arrows
 noop
 noop
@@ -177,13 +173,9 @@ noop
 noop
 noop
 noop
-
 genArrows:
-
 addi $19,$19,1 # MAKE CONDITION FOR WHEN THEY'RE PAST 510.
-
 lw   $26,0($19) # Loads first memory spot into reg $26
-
 addi $1,$0,0
 lw   $2,7($1) #Here we load the constant of 1 from memory to compare to random number
 bne  $2,$26, loadLeftStartPoint # We jump to code that defines a register with the left arrow start
@@ -213,7 +205,6 @@ noop
 noop
 noop
 noop
-
 loadLeftStartPoint: 
 addi $1,$0,0
 lw   $2,3($1)
@@ -275,11 +266,11 @@ noop
 StartBuildLoop:
 addi $1,$0,600 # This memory location has the location of the start index of the object
 lw   $7,1($1)  # Loads into reg $7 the first the write location
-lw   $8,0($1)  # Loads arrow type (color mapping) 
+lw   $8,0($1)  # Loads arrow type (color mapping) #IGNORE FOR NOW
+addi $8, $0, 1
 sw   $8,0($7)  # Drawn from color location
 addi $7,$7,2
 addi $12,$12,2
-
 blt $12,$27,StartBuildLoop
 noop
 noop
@@ -289,7 +280,6 @@ noop
 addi $11,$11,1 # Michaels code
 addi $7,$7,591
 addi $12,$12,-49
-
 blt $11,$27,StartBuildLoop
 noop
 noop
@@ -301,15 +291,12 @@ lw   $14,0($3)
 addi $4,$14,1 #####Update arrow count
 sw   $4,0($3)
 addi $14,$0,0
-
-
 jr $31
 noop
 noop
 noop
 noop
 noop
-
 moveArrows:
 addi $5,$0,210 #Loads first arrow mem location
 addi $16,$0,4000 # Limit for off the screen
@@ -347,7 +334,6 @@ noop
 noop
 noop
 noop
-
 RemoveArrow:
 sw $0,1($5) #Deletes data for arrow location
 sw $0,0($5) # Deletes data for arrow type
@@ -358,7 +344,6 @@ noop
 noop
 noop
 noop
-
 RefreshArrows:
 addi $5,$0,210 #Loads first arrow type address
 addi $1,$0,600
@@ -389,8 +374,6 @@ noop
 noop
 noop
 noop
-
-
 wait:
 addi $9,$9,1 #jal checkKeyInput
 blt $9,$10,wait
@@ -406,7 +389,6 @@ noop
 noop
 noop
 noop
-
 .data
 wow: .word 0x0000B504
 mystring: .string ASDASDASDASDASDASD
