@@ -1,7 +1,0 @@
-module timer(clock, out);
-
-input clock;
-output out;
-
-
-endmodule
