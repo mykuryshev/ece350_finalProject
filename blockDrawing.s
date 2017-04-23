@@ -283,44 +283,7 @@ noop
 noop
 noop
 noop
-noop 
-addi $2, $2, 44200
-noop
-noop
-noop
-noop
-noop
-lw $27, 202($0)
-noop
-noop
-noop
-noop
-noop
-addi $27, $27, 1280
-noop
-noop
-noop
-noop
-noop
-sw $27, 202($0)
-noop
-noop
-noop
-noop
-noop
-sw $0, 203($0)
-noop
-noop
-noop
-noop
-noop
-sw $0, 205($0)
-noop
-noop
-noop
-noop
-noop
-sw $0, 207($0)
+jal moveArrows
 noop
 noop
 noop
@@ -557,6 +520,130 @@ noop
 noop
 j end
 noop
+noop
+noop
+noop
+noop
+noop
+
+
+moveArrows:
+addi $18, $0, 199
+noop
+noop
+noop
+noop
+noop
+addi $19, $0, 300 
+noop
+noop
+noop
+noop
+noop
+addi $20, $0, 64000 #setting max arrow location
+noop
+noop
+noop
+noop
+noop
+addi $20, $20, 64000
+noop
+noop
+noop
+noop
+noop
+addi $20, $20, 6400
+noop
+noop
+noop
+noop
+noop
+sweep2:
+noop
+noop
+noop
+noop
+noop
+addi $18, $18, 2
+noop #largely same as in sweepDraw but avoiding 2+ jals in loops
+noop
+noop
+noop
+lw $1, 0($18)
+noop
+noop
+noop
+noop
+noop
+lw $3, 1($18)
+noop
+noop
+noop
+noop
+noop
+bne $1, $0, sweep2 #if no arrow here, just keep sweeping
+noop
+noop
+noop
+noop
+noop
+blt $20, $3, deleteArrow
+noop
+noop
+noop
+noop
+noop
+addi $3, $3, 1920
+noop
+noop
+noop
+noop
+noop
+sw $3, 1($18)
+noop
+noop
+noop
+noop
+noop
+moveNext:
+noop
+noop
+noop
+noop
+noop
+blt $18, $19, sweep2 
+noop
+noop
+noop
+noop
+noop
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+deleteArrow:
+noop
+noop
+noop
+noop
+noop
+sw $0, 0($18)
+noop
+noop
+noop
+noop
+noop
+sw $0, 1($18)
+noop
+noop
+noop
+noop
+noop
+j moveNext
 noop
 noop
 noop
