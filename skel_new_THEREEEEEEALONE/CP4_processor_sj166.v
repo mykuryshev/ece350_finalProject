@@ -1,11 +1,7 @@
 module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, vga_address, vga_out,
-									vga_clock, timer_out);
+									vga_clock, timer_out, key_press_ind, key_press_data, reg28_data);
 
-	input 			clock, reset/*, ps2_key_pressed*/;
-	//input 	[7:0]	ps2_out;
-	
-	//output 			lcd_write;
-	//output 	[31:0] 	lcd_data;
+	input clock, reset;
 	
 	output 	[31:0] 	dmem_data_in;
 	output	[11:0]	dmem_address;
@@ -55,13 +51,21 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 	
 	output timer_out;
 	timer processor_timer(clock, reset, timer_out);
+	
+	input key_press_ind;
+	input[7:0] key_press_data;
+	wire[31:0] regfile_key_data;
+	assign regfile_key_data[31:8] = 24'h000000;
+	assign regfile_key_data[7:0] = key_press_data;
 
+	output[31:0] reg28_data;
 	
 	//A = rs or rstatus if it's a bex, B = rt, or rd if it's a branch or a sw or a jr
 	regfile_mod reg_file(.clock(~clock), .ctrl_writeEnable(regfile_write_enable), .ctrl_reset(reset), .ctrl_writeReg(regfile_write_addr), 
 						  .ctrl_readRegA(regfile_readinput_A[4:0]), .ctrl_readRegB(regfile_readinput_B[4:0]), .data_writeReg(rd_writedata[31:0]),
 						  .rs_write(rs_write), .rs_writeData(rs_writeData), 
-						  .data_readRegA(regread_A[31:0]), .data_readRegB(regread_B[31:0]), .timer_state(timer_out));
+						  .data_readRegA(regread_A[31:0]), .data_readRegB(regread_B[31:0]), .timer_state(timer_out), 
+						  .key_pressed_indicator(key_press_ind), .key_pressed_data(regfile_key_data), .reg28_data(reg28_data));
 	
 	//Current instruction is branch instruction if opcode = 00010 or 00110
 	assign bne_indicator = (~|F_D_out[31:29] && F_D_out[28] && ~F_D_out[27]); 
@@ -1043,15 +1047,15 @@ endmodule
 module regfile_mod(
 	clock, ctrl_writeEnable, ctrl_reset, ctrl_writeReg, 
 	ctrl_readRegA, ctrl_readRegB, data_writeReg, data_readRegA,
-	data_readRegB, rs_write, rs_writeData, timer_state
-	);
+	data_readRegB, rs_write, rs_writeData, timer_state,
+	key_pressed_indicator, key_pressed_data, reg28_data);
 	
-	input clock, ctrl_writeEnable, ctrl_reset, timer_state;
+	input clock, ctrl_writeEnable, ctrl_reset, timer_state, key_pressed_indicator, rs_write;
 	input [4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
 	input[31:0] data_writeReg, rs_writeData;
-	input rs_write;
-	
-	output[31:0] data_readRegA, data_readRegB;
+	input[31:0] key_pressed_data;	
+		
+	output[31:0] data_readRegA, data_readRegB, reg28_data;
 	
 	wire [31:0] write_select_bits; //Input to the AND gates for write enable
 	decoder write_decoder(ctrl_writeReg, write_select_bits);
@@ -1067,16 +1071,17 @@ module regfile_mod(
 	wire[1023:0] Reg_data; //Output from the registers
 	
 	
+	//Create write enables for registers 0 - 29
 	genvar i; 
 	generate
-	for(i = 0; i < 30; i = i+1) begin: loop1
+	for(i = 1; i < 28; i = i+1) begin: loop1
 		and and_temp(register_write_enable_bits[i], ctrl_writeEnable, write_select_bits[i]);
 	end
 	endgenerate
 	
 	//Starts at 1 because register 0 is fixed to 0; ends at 28 because register 29 is reserved for a timer output
 	generate
-	for(i = 1; i < 29; i = i+1) begin: loop2
+	for(i = 1; i < 28; i = i+1) begin: loop2
 		register reg_temp(clock, data_writeReg, register_write_enable_bits[i], Reg_data[32*i+31:32*i], ctrl_reset);
 		end
 	endgenerate
@@ -1084,12 +1089,21 @@ module regfile_mod(
 	//Register 0 is fixed at 0!
 	assign Reg_data[31:0] = 32'h00000000;
 	
+	
+	//Register 28 has 2 sets of write data: keyboard stuff and regular stuff - prioritizing keyboard input
+	assign register_write_enable_bits[28] = key_pressed_indicator || (write_select_bits[28] && ctrl_writeEnable);
+	wire[31:0] reg28_writeData;
+	assign reg28_writeData = key_pressed_indicator ? key_pressed_data : data_writeReg;
+	register reg_28(clock, reg28_writeData, register_write_enable_bits[28], Reg_data[927:896], ctrl_reset);
+	assign reg28_data = Reg_data[927:896];
+	
+	
 	//Register 29 is set to timer state!
 	assign Reg_data[959:929] = 31'b0000000000000000000000000000000;
 	assign Reg_data[928] = timer_state;
 	
-	///////////////////////////////////////////////////Setting up register 30, $rstatus///////////////////////////////////////////////////////////////////
-	//Can write to $rstatus using regular write address or using rs_write (don't need writeenable for the latter); 
+	
+	//Register 30: Can write to $rstatus using regular write address or using rs_write (don't need writeenable for the latter); 
 	assign register_write_enable_bits[30] = rs_write || (write_select_bits[30] && ctrl_writeEnable);
 	
 	//Write data to $rstatus: If rs_write is enabled, we select rs_writeData; otherwise, we select the regular write data
@@ -1098,11 +1112,11 @@ module regfile_mod(
 	
 	register reg_status(clock, rstatus_dataIn, register_write_enable_bits[30], Reg_data[991:960], ctrl_reset);
 	
-	//Setup register 31, just like 0-29
+	
+	//Register 31: just like 0-29
 	assign register_write_enable_bits[31] = ctrl_writeEnable && write_select_bits[31];
 	register reg_31(clock, data_writeReg, register_write_enable_bits[31], Reg_data[1023:992], ctrl_reset);
 	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	generate
 	for(i = 0; i < 1024; i = i+1) begin: loop3

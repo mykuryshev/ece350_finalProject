@@ -44,34 +44,49 @@ module skeleton(resetn,
 	wire	[7:0]	 ps2_out;	
 	
 	// clock divider (by 5, i.e., 10 MHz)
-	pll div(CLOCK_50,inclock);
-	assign clock = CLOCK_50;
+	pll2 div(CLOCK_50,inclock);
+	//assign clock = CLOCK_50;
 	
 	// UNCOMMENT FOLLOWING LINE AND COMMENT ABOVE LINE TO RUN AT 50 MHz
-	//assign clock = inclock;
+	assign clock = inclock;
 	
-	// your processor
 	
 	wire[18:0] vga_address;
 	wire[7:0] vga_index;
 	
-	CP4_processor_sj166 myprocessor(.clock(clock), .reset(~resetn), /*ps2_key_pressed, ps2_out, lcd_write_en, lcd_write_data,*/ 
+	wire[7:0] debounced_ps2;
+	wire ps2_indicator;
+	wire[7:0] key_reg_data;
+	
+	CP4_processor_sj166 myprocessor(.clock(clock), .reset(~resetn), 
 												.dmem_data_in(debug_data_in), .dmem_address(debug_addr), .vga_address(vga_address), 
-												.vga_out(vga_index), .vga_clock(VGA_CLK));
+												.vga_out(vga_index), .vga_clock(VGA_CLK), .key_press_ind(ps2_indicator), .key_press_data(debounced_ps2), 
+												.reg28_data(key_reg_data));
 	
-	// keyboard controller for project
-	// PS2_Interface myps2(clock, resetn, ps2_clock, ps2_data, ps2_key_data, ps2_key_pressed, ps2_out);
 	
-	// lcd controller  for project
+	// keyboard controller: Interfaces with PS2 at a low level
+	PS2_Interface myps2(.inclock(clock), .resetn(resetn), 
+							  .ps2_clock(ps2_clock), .ps2_data(ps2_data),
+							  .ps2_key_data(ps2_key_data), .ps2_key_pressed(ps2_key_pressed), .last_data_received(ps2_out));
+	 
+	//Debouncing FSM: Processes ps2 output into a debounced signal
+	ps2_fsm fsm(ps2_key_pressed, clock, ~resetn, ps2_key_data, debounced_ps2);
+	
+	//Handler: Processes debounced PS2 into indicator signals for the 4 keys that we're interested in
+	wire upKey, leftKey, downKey, rightKey;
+	assign ps2_indicator = upKey || leftKey || downKey || rightKey;
+
+	ps2_handler handleps2(debounced_ps2, upKey, leftKey, downKey, rightKey);
+	
+	
 	//lcd mylcd(clock, ~resetn, 1'b1, ps2_out, lcd_data, lcd_rw, lcd_en, lcd_rs, lcd_on, lcd_blon);
 	
-	// example for sending ps2 data to the first two seven segment displays  for project
-	//Hexadecimal_To_Seven_Segment hex1(ps2_out[3:0], seg1);
-	//Hexadecimal_To_Seven_Segment hex2(ps2_out[7:4], seg2);
+	Hexadecimal_To_Seven_Segment hex1(key_reg_data[3:0], seg1);
+	Hexadecimal_To_Seven_Segment hex2(key_reg_data[7:4], seg2);
 	
-	// the other seven segment displays are currently set to 0  for project
-	//Hexadecimal_To_Seven_Segment hex3(4'b0, seg3);
-	//Hexadecimal_To_Seven_Segment hex4(4'b0, seg4);
+	Hexadecimal_To_Seven_Segment hex3(ps2_out[3:0], seg3);
+	Hexadecimal_To_Seven_Segment hex4(ps2_out[7:4], seg4);
+	
 	//Hexadecimal_To_Seven_Segment hex5(4'b0, seg5);
 	//Hexadecimal_To_Seven_Segment hex6(4'b0, seg6);
 	//Hexadecimal_To_Seven_Segment hex7(4'b0, seg7);
