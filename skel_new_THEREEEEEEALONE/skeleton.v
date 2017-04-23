@@ -57,11 +57,12 @@ module skeleton(resetn,
 	wire[7:0] debounced_ps2;
 	wire ps2_indicator;
 	wire[7:0] key_reg_data;
+	wire[31:0] reg29_data;
 	
 	CP4_processor_sj166 myprocessor(.clock(clock), .reset(~resetn), 
 												.dmem_data_in(debug_data_in), .dmem_address(debug_addr), .vga_address(vga_address), 
 												.vga_out(vga_index), .vga_clock(VGA_CLK), .key_press_ind(ps2_indicator), .key_press_data(debounced_ps2), 
-												.reg28_data(key_reg_data));
+												.reg28_data(key_reg_data), .reg29_data(reg29_data));
 	
 	
 	// keyboard controller: Interfaces with PS2 at a low level
@@ -81,15 +82,19 @@ module skeleton(resetn,
 	
 	//lcd mylcd(clock, ~resetn, 1'b1, ps2_out, lcd_data, lcd_rw, lcd_en, lcd_rs, lcd_on, lcd_blon);
 	
+	//These 2 are hardwired to register 28
 	Hexadecimal_To_Seven_Segment hex1(key_reg_data[3:0], seg1);
 	Hexadecimal_To_Seven_Segment hex2(key_reg_data[7:4], seg2);
 	
+	//These are hardwired to the ps2 scan code
 	Hexadecimal_To_Seven_Segment hex3(ps2_out[3:0], seg3);
 	Hexadecimal_To_Seven_Segment hex4(ps2_out[7:4], seg4);
 	
 	//Hexadecimal_To_Seven_Segment hex5(4'b0, seg5);
-	//Hexadecimal_To_Seven_Segment hex6(4'b0, seg6);
-	//Hexadecimal_To_Seven_Segment hex7(4'b0, seg7);
+	//These 2 are harwired to register 29
+	Hexadecimal_To_Seven_Segment hex6(reg29_data[3:0], seg6);
+	Hexadecimal_To_Seven_Segment hex7(reg29_data[7:4], seg7);
+	
 	//Hexadecimal_To_Seven_Segment hex8(4'b0, seg8);
 	
 	// some LEDs that you could use for debugging if you wanted  for project

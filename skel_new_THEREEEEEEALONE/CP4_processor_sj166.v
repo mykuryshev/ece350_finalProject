@@ -1,5 +1,5 @@
 module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, memory_out, vga_address, vga_out,
-									vga_clock, timer_out, key_press_ind, key_press_data, reg28_data);
+									vga_clock, timer_out, key_press_ind, key_press_data, reg28_data, reg29_data);
 
 	input clock, reset;
 	
@@ -58,14 +58,14 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, memory_out,
 	assign regfile_key_data[31:8] = 24'h000000;
 	assign regfile_key_data[7:0] = key_press_data;
 
-	output[31:0] reg28_data;
+	output[31:0] reg28_data, reg29_data;
 	
 	//A = rs or rstatus if it's a bex, B = rt, or rd if it's a branch or a sw or a jr
 	regfile_mod reg_file(.clock(~clock), .ctrl_writeEnable(regfile_write_enable), .ctrl_reset(reset), .ctrl_writeReg(regfile_write_addr), 
 						  .ctrl_readRegA(regfile_readinput_A[4:0]), .ctrl_readRegB(regfile_readinput_B[4:0]), .data_writeReg(rd_writedata[31:0]),
 						  .rs_write(rs_write), .rs_writeData(rs_writeData), 
 						  .data_readRegA(regread_A[31:0]), .data_readRegB(regread_B[31:0]), .timer_state(timer_out), 
-						  .key_pressed_indicator(key_press_ind), .key_pressed_data(regfile_key_data), .reg28_data(reg28_data));
+						  .key_pressed_indicator(key_press_ind), .key_pressed_data(regfile_key_data), .reg28_data(reg28_data), .reg29_data(reg29_data));
 	
 	//Current instruction is branch instruction if opcode = 00010 or 00110
 	assign bne_indicator = (~|F_D_out[31:29] && F_D_out[28] && ~F_D_out[27]); 
@@ -1064,14 +1064,14 @@ module regfile_mod(
 	clock, ctrl_writeEnable, ctrl_reset, ctrl_writeReg, 
 	ctrl_readRegA, ctrl_readRegB, data_writeReg, data_readRegA,
 	data_readRegB, rs_write, rs_writeData, timer_state,
-	key_pressed_indicator, key_pressed_data, reg28_data);
+	key_pressed_indicator, key_pressed_data, reg28_data, reg29_data);
 	
 	input clock, ctrl_writeEnable, ctrl_reset, timer_state, key_pressed_indicator, rs_write;
 	input [4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
 	input[31:0] data_writeReg, rs_writeData;
 	input[31:0] key_pressed_data;	
 		
-	output[31:0] data_readRegA, data_readRegB, reg28_data;
+	output[31:0] data_readRegA, data_readRegB, reg28_data, reg29_data;
 	
 	wire [31:0] write_select_bits; //Input to the AND gates for write enable
 	decoder write_decoder(ctrl_writeReg, write_select_bits);
@@ -1112,12 +1112,11 @@ module regfile_mod(
 	assign reg28_writeData = key_pressed_indicator ? key_pressed_data : data_writeReg;
 	register reg_28(clock, reg28_writeData, register_write_enable_bits[28], Reg_data[927:896], ctrl_reset);
 	assign reg28_data = Reg_data[927:896];
-	
-	
-	//Register 29 is set to timer state!
-	assign Reg_data[959:929] = 31'b0000000000000000000000000000000;
-	assign Reg_data[928] = timer_state;
-	
+
+	//Register 29
+	assign register_write_enable_bits[29] = (write_select_bits[29] && ctrl_writeEnable);
+	register reg_29(clock, data_writeReg, register_write_enable_bits[29], Reg_data[959:928], ctrl_reset);
+	assign reg29_data = Reg_data[959:928];
 	
 	//Register 30: Can write to $rstatus using regular write address or using rs_write (don't need writeenable for the latter); 
 	assign register_write_enable_bits[30] = rs_write || (write_select_bits[30] && ctrl_writeEnable);
