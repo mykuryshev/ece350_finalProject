@@ -50,13 +50,6 @@ assign address = ADDR;
 
 //////INDEX addr.
 assign VGA_CLK_n = ~iVGA_CLK;
-/*
-img_data	img_data_inst (
-	.address ( ADDR ),
-	.clock ( VGA_CLK_n ),
-	.q ( index )
-	);*/
-//////Color table output
 
 img_index	img_index_inst (
 	.address ( index ),

@@ -1,4 +1,4 @@
-module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, vga_address, vga_out,
+module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, memory_out, vga_address, vga_out,
 									vga_clock, timer_out, key_press_ind, key_press_data, reg28_data);
 
 	input clock, reset;
@@ -346,7 +346,7 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 
 	assign dmem_address = alu1out_M[11:0];
 	assign dmem_data_in = regB_M[31:0];
-	output[31:0] dmem_out;
+	wire[31:0] dmem_out;
 	wire sw_M;
 	assign sw_M = ~|opcode_M[4:3] && &opcode_M[2:0];
 
@@ -360,13 +360,28 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 	wire sw_VGA;
 	assign sw_VGA = ~opcode_M[4] && &opcode_M[3:0];
 	
+	//LW_VGA CODE = 11000
+	wire lw_VGA;
+	assign lw_VGA = &opcode_M[4:3] && ~|opcode_M[2:0];
+	
 	input vga_clock;
 	
+	wire[31:0] vga_outputA;
+	assign vga_outputA[31:8] = 24'h000000;
+	
+	//VGAMEM Usage:
+	//Write port A: Allows processor to store to vgamem
+	//Read port A: Allows processor to load from vgamem
+	
+	//Write port B: Disabled
+	//Read port B: Allows vga controller to read from vgamem
+	
 	vgamem_new myvgamem(.address_a(alu1out_M[18:0]), .address_b(vga_address), .inclock(~clock), .data_a(dmem_data_in[7:0]), .data_b(dmem_data_in[7:0]),
-						 .wren_a(sw_VGA), .wren_b(1'b0),  .q_b(vga_out), .outclock(vga_clock));
+						 .wren_a(sw_VGA), .wren_b(1'b0),  .q_a(vga_outputA[7:0]), .q_b(vga_out), .outclock(~clock));
 	
 	
-	
+	output[31:0] memory_out;
+	assign memory_out = lw_VGA ? vga_outputA : dmem_out;
 
 	wire[31:0] target_W, data_W, pc_W;
 	wire[4:0] rd_addr_W, aluop_W;
@@ -375,7 +390,7 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 	wire[31:0] aluout_W;
 	
 	//data, alu, op, rd, tgt, of, clock, reset, data_out, alu_out, opcode, rd_addr, target, overflow
-	MW M_W(.data(dmem_out), .alu(alu1out_M), .op(opcode_M), .rd(rd_addr_M), .tgt(target_M), .of(overflow_M), .clock(clock), .reset(reset), .aluop(aluop_M), .pc(pc_M),
+	MW M_W(.data(memory_out), .alu(alu1out_M), .op(opcode_M), .rd(rd_addr_M), .tgt(target_M), .of(overflow_M), .clock(clock), .reset(reset), .aluop(aluop_M), .pc(pc_M),
 			 .data_out(data_W), .alu_out(aluout_W), .opcode(opcode_W), .rd_addr(rd_addr_W), .target(target_W), .overflow(overflow_W),
 			 .pc_out(pc_W), .alu_opcode(aluop_W));
 			 
@@ -428,7 +443,8 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 	
 	wire addi_W = ~|opcode_W[4:3] && opcode_W[2] && ~opcode_W[1] && opcode_W[0]; //00101
 	wire lw_W = ~opcode_W[4] && opcode_W[3] && ~|opcode_W[2:0]; //01000
-	wire itype_W = addi_W || lw_W;
+	wire lw_VGA_W = &opcode_W[4:3] && ~|opcode_W[2:0];
+	wire itype_W = addi_W || lw_W || lw_VGA_W;
 	
 	wire setx_W;
 	assign setx_W = opcode_W[4] && ~opcode_W[3] && opcode_W[2] && ~opcode_W[1] && opcode_W[0];//10101
@@ -443,7 +459,7 @@ module CP4_processor_sj166(clock, reset, dmem_data_in, dmem_address, dmem_out, v
 	assign rs_write = overflow_condition || setx_W;
 	
 	// rd_addr for r-type, lw, addi; $31 for jal.
-	wire[4:0] regfile_write_addr_int = (rtype_W || lw_W || addi_W) ? rd_addr_W : 5'b11111; 	
+	wire[4:0] regfile_write_addr_int = (rtype_W || lw_W || addi_W || lw_VGA_W) ? rd_addr_W : 5'b11111; 	
 	assign regfile_write_addr = multdiv_ready ? multdiv_addr_out[4:0] : regfile_write_addr_int;
 	
 	//Overflow code: 1 for add, 2 for addi, 3 for sub, 4 for mult, 5 for div: WONT WORK FOR MULT DIV 
