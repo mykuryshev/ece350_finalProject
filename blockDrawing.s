@@ -30,7 +30,7 @@ noop
 noop
 noop
 noop
-sll $10, $10, 4 #around 1 million now
+sll $10, $10, 3 #around 1 million now
 noop
 noop
 noop
@@ -296,7 +296,7 @@ noop
 noop
 noop
 noop
-addi $27, $27, 1920
+addi $27, $27, 1280
 noop
 noop
 noop
@@ -333,94 +333,6 @@ noop
 noop
 noop
 
-
-
-drawBlock:
-noop
-noop
-noop
-noop
-noop
-addi $5, $0, 0
-noop
-noop
-noop
-noop
-noop
-addi $26, $0, 0
-noop
-noop
-noop
-noop
-noop
-addi $1, $0, 1
-noop
-noop
-noop
-noop
-noop
-addi $27, $0, 100
-
-loopABC:
-noop
-noop
-noop
-noop
-noop
-sw $1, 0($2)
-noop
-noop
-noop
-noop
-noop
-addi $2, $2, 2 
-noop
-noop
-noop
-noop
-noop
-addi $5, $5, 2
-noop
-noop
-noop
-noop
-noop
-blt $5, $4, loopABC
-noop
-noop
-noop
-noop
-noop
-addi $5, $5, -49
-noop
-noop
-noop
-noop
-noop
-addi $2, $2, 591
-noop
-noop
-noop
-noop
-noop
-addi $26, $26, 1 
-noop
-noop
-noop
-noop
-noop
-blt $26, $27, loopABC
-noop
-noop
-noop
-noop
-noop
-jr $31 
-noop
-noop
-noop
-noop
-noop
 
 
 
