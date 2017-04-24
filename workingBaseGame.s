@@ -9,12 +9,65 @@ sll $10, $10, 2 #around 1 million now
 addi $9, $9, 0
 addi $29,$0, 1
 addi $11, $0, 1
+
+
+
+addi $3, $0, 38400
+sll $3, $3, 3
+sw $3, 5($0) #or whatnot, size of screen for screen clears
+addi $3, $0, 0 #cleared here, never called again this way
+j initScanCodes
+noop
+noop
+noop
+noop
+noop
+
+
+
+initScanCodes:
+addi $28, $0, 0 #will store scan code for valid key inputs #key codes stored in memory 800-899, 800 left, 801 up, 802 right, 803 down
+addi $16, $0, 107 #left
+sw $16, 800($0)
+addi $16, $0, 117 #up
+sw $16, 801($0)
+addi $16, $0, 116 #right
+sw $16, 802($0)
+addi $16, $0, 114 #down
+sw $16, 803($0)
+addi $16, $0, 44 #t, start from menu, used
+sw $16, 804($0)
+addi $16, $0, 22 #1, set slow speed in menu, used
+sw $16, 805($0)
+addi $16, $0, 30 #2, set slow speed in menu, used
+sw $16, 806($0)
+addi $16, $0, 38 #3, set slow speed in menu, used
+sw $16, 807($0)
+addi $16, $0, 29 #w, compare to another reg, not 28
+sw $16, 808($0)
+addi $16, $0, 28 #a, compare to another reg, not 28
+sw $16, 809($0)
+addi $16, $0, 27 #s, compare to another reg, not 28
+sw $16, 810($0)
+addi $16, $0, 35 #d, compare to another reg, not 28
+sw $16, 811($0)
+addi $16, $0, 45 #r, reset from anywhere, NEED IN TWO PLAYER!!!
+sw $16, 812($0)
+addi $16, $0, 77 #p, pause from in game, NEED IN TWO PLAYER!!!
+sw $16, 813($0)
+addi $16, $0, 37 #4, set 1 player in menu, used
+sw $16, 814($0)
+addi $16, $0, 46 #5, set 2 player in menu, used
+sw $16, 815($0)
+addi $16, $0, 0
 j initArrowListInMem
 noop
 noop
 noop
 noop
 noop
+
+
 
 initArrowListInMem:
 addi $25, $0, 10 #initial cycle to appear
@@ -51,130 +104,15 @@ addi $25, $0, 310
 addi $26, $0, 2
 addi $27, $0, 38100
 
-addi $28, $0, 0 #will store scan code for valid key inputs #key codes stored in memory 800-899, 800 left, 801 up, 802 right, 803 down
-addi $16, $0, 107 #left
-sw $16, 800($0)
-addi $16, $0, 117 #up
-sw $16, 801($0)
-addi $16, $0, 116 #right
-sw $16, 802($0)
-addi $16, $0, 114 #down
-sw $16, 803($0)
-addi $16, $0, 0
-addi $16, $0, 0 
-sw $16, 900($0) #store score
-j beginning
+
+sw $0, 900($0) #reset score
+j menu
 noop
 noop
 noop
 noop
 noop
 
-beginning:
-addi $18, $0, 201
-addi $19, $0, 221
-j inLevel
-noop
-noop
-noop
-noop
-noop
-
-inLevel:
-noop
-noop
-noop
-noop
-noop
-jal genArrows
-noop
-noop
-noop
-noop
-noop
-addi $1, $0, 1 #not really needed
-addi $15, $0, 1 #to draw
-noop
-noop
-noop
-noop
-noop
-jal sweepDraw #Draw real stuff
-noop
-noop
-noop
-noop
-noop
-addi $2, $0, 5800 # $2 is starting point for random block
-noop
-noop
-noop
-noop
-noop 
-jal stall #Chill
-noop
-noop
-noop
-noop 
-noop
-addi $15, $0, 0
-noop
-noop
-noop
-noop 
-noop
-jal sweepDraw #Erase
-noop
-noop
-noop
-noop
-noop
-bne $28, $0, skipstep 
-noop
-noop
-noop
-noop 
-noop
-jal checkInputsInLevel
-noop
-noop
-noop
-noop 
-noop
-skipstep:
-noop
-noop
-noop
-noop 
-noop
-jal moveArrows
-noop
-noop
-noop
-noop
-noop
-j inLevel
-noop
-noop
-noop
-noop
-noop
-
-
-draw: 
-addi $5, $0, 0
-addi $2, $3, -32000
-noop
-noop
-noop
-noop
-noop
-j drawLoop
-noop
-noop
-noop
-noop
-noop
 
 
 drawLoop:
@@ -213,6 +151,454 @@ noop
 noop
 noop
 
+
+
+drawScreen:
+noop
+noop
+noop
+sw $1, 0($2)
+addi $2, $2, 1
+blt $2, $3, drawScreen
+noop
+noop
+noop
+noop
+noop
+addi $3, $0, 0
+addi $2, $0, 0
+addi $1, $0, 0
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+reset:
+addi $1, $0, 7 #value to clear to menu background, dark grey for now
+addi $2, $0, 0
+lw $3, 5($0)
+jal drawScreen
+addi $28, $0, 0 
+addi $6, $0, 0 #reset cycle count
+addi $10, $0, 65000 #set default speed of game on rest
+sll $10, $10, 2 #standard, normal delay 
+addi $12, $0, 0 #set 1 player mode on reset
+jal clearCurrentArrowsInMem
+noop
+noop
+noop
+noop
+noop
+j initArrowListInMem
+noop
+noop
+noop
+noop
+noop
+
+
+
+clearCurrentArrowsInMem:
+addi $18, $0, 199
+addi $19, $0, 300
+clearArrowLoop:
+addi $18, $18, 2
+sw $0, 0($18)
+sw $0, 1($18)
+blt $18, $19, clearArrowLoop
+noop
+noop
+noop
+noop
+noop
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+menu:
+noop
+noop
+noop
+noop
+noop
+jal checkStart #not worried about setPlayers yet...
+noop
+noop
+noop
+noop
+noop
+jal setSpeed 
+noop
+noop
+noop
+noop
+noop
+j menu
+noop
+noop
+noop
+noop
+noop
+
+
+
+setSpeed:
+sw $31, 1337($0) #just some hidden spot, who dares to use it
+lw $16, 805($0)
+bne $16, $28, setSlow
+noop
+noop
+noop
+noop
+noop
+lw $16, 806($0)
+bne $16, $28, setMedium
+noop
+noop
+noop
+noop
+noop
+lw $16, 807($0)
+bne $16, $28, setFast
+noop
+noop
+noop
+noop
+noop
+j finishSetSpeed
+noop
+noop
+noop
+noop
+noop
+
+
+
+setSlow:
+addi $28, $0, 0
+addi $10, $0, 10000
+sll $10, $10, 2
+addi $1, $0, 1 #set menu to green screen for easy mode
+addi $2, $0, 0
+lw $3, 5($0)
+jal drawScreen
+noop
+noop
+noop
+noop
+noop
+j finishSetSpeed
+noop
+noop
+noop
+noop
+noop
+
+
+
+setMedium:
+addi $28, $0, 0
+addi $10, $0, 10000
+sll $10, $10, 1
+addi $1, $0, 5 #set menu to yellow screen for medium
+addi $2, $0, 0
+lw $3, 5($0)
+jal drawScreen
+noop
+noop
+noop
+noop
+noop
+j finishSetSpeed
+noop
+noop
+noop
+noop
+noop
+
+
+
+setFast:
+addi $28, $0, 0
+addi $10, $0, 10000
+addi $1, $0, 4 #set menu to red background for hard
+addi $2, $0, 0
+lw $3, 5($0)
+jal drawScreen
+noop
+noop
+noop
+noop
+noop
+lw $31, 1337($0)
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+finishSetSpeed:
+noop
+noop
+noop
+j menu
+noop
+noop
+noop
+noop
+noop
+
+
+
+setPlayers:
+lw $16, 814($0)
+bne $16, $28, setOnePlayer
+noop
+noop
+noop
+noop
+noop
+lw $16, 815($0)
+bne $16, $28, setTwoPlayer
+noop
+noop
+noop
+noop
+noop
+j finishSetPlayers
+noop
+noop
+noop
+noop
+noop
+
+
+
+setOnePlayer:
+addi $12, $0, 0 #one player mode
+addi $28, $0, 0
+j finishSetPlayers
+noop
+noop
+noop
+noop
+noop
+
+
+
+setTwoPlayer:
+addi $12, $0, 1 #not one player mode, therefore 2 player mode
+addi $28, $0, 0
+j finishSetPlayers
+noop
+noop
+noop
+noop
+noop
+
+
+
+finishSetPlayers:
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkStart:
+noop
+noop
+noop
+noop
+noop
+lw $16, 804($0)
+noop
+noop
+noop
+noop
+noop
+bne $16, $28, start
+noop
+noop
+noop
+noop
+noop
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+start:
+addi $1, $0, 0 #value to clear to menu background
+addi $2, $0, 0
+lw $3, 5($0)
+addi $28, $0, 0
+jal drawScreen
+noop
+noop
+noop
+noop
+noop
+addi $28, $0, 0
+j beginning
+noop
+noop
+noop
+noop
+noop
+
+
+
+beginning:
+addi $18, $0, 201
+addi $19, $0, 300
+j inLevel
+noop
+noop
+noop
+noop
+noop
+
+
+
+inLevel:
+noop
+noop
+noop
+noop
+noop
+jal genArrows
+noop
+noop
+noop
+noop
+noop
+addi $1, $0, 1 #not really needed
+addi $15, $0, 1 #to draw
+noop
+noop
+noop
+noop
+noop
+jal sweepDraw #Draw real stuff
+noop
+noop
+noop
+noop
+noop
+addi $2, $0, 5800 # $2 is starting point for random block
+noop
+noop
+noop
+noop
+noop 
+jal checkPause
+noop
+noop
+noop
+noop
+noop
+jal stall #Chill
+noop
+noop
+noop
+noop 
+noop
+addi $15, $0, 0
+noop
+noop
+noop
+noop 
+noop
+jal sweepDraw #Erase
+noop
+noop
+noop
+noop
+noop
+jal checkReset
+noop
+noop
+noop
+noop
+noop
+bne $28, $0, skipstep 
+noop
+noop
+noop
+noop 
+noop
+jal checkInputsInLevel
+noop
+noop
+noop
+noop 
+noop
+j skipstep
+noop
+noop
+noop
+noop
+noop
+
+
+skipstep:
+noop
+noop
+noop
+noop 
+noop
+jal moveArrows
+noop
+noop
+noop
+noop
+noop
+j inLevel
+noop
+noop
+noop
+noop
+noop
+
+
+
+draw: 
+addi $5, $0, 0
+addi $2, $3, -32000
+noop
+noop
+noop
+noop
+noop
+j drawLoop
+noop
+noop
+noop
+noop
+noop
+
+
+
 stall: 
 noop
 noop
@@ -249,6 +635,8 @@ noop
 noop
 noop
 noop
+
+
 
 checkInputsInLevel:
 noop
@@ -296,16 +684,17 @@ noop
 noop
 
 
+
 endInputCheck:
 addi $11, $0, 1
 addi $16, $0, 0
-addi $28, $0, 0 #reset key input state of $28
 jr $31
 noop
 noop
 noop
 noop
 noop
+
 
 
 checkToScore:
@@ -316,12 +705,14 @@ addi $20, $20, 65000 #highest row allowing score
 addi $21, $0, 65000
 addi $21, $21, 65000
 addi $21, $21, 65000 #lowest row allowing score
+addi $28, $0, 0 #reset inputs
 j scoreSweep
 noop
 noop
 noop
 noop
 noop
+
 
 
 scoreSweep:
@@ -352,6 +743,7 @@ noop
 noop
 noop
 noop
+
 
 
 checkBounds:
@@ -387,6 +779,7 @@ noop
 noop
 
 
+
 end:
 noop
 noop 
@@ -401,6 +794,7 @@ noop
 noop
 
 
+
 sweepDraw:
 addi $18, $0, 201 #sweepDraw entirely uses memory, and state of reg 15
 addi $19, $0, 220
@@ -410,6 +804,8 @@ noop
 noop
 noop
 noop
+
+
 
 sweep:
 blt $19, $18, drawCall #will let us break out of the loop
@@ -439,6 +835,8 @@ noop
 noop
 noop
 noop
+
+
 
 drawCall:
 blt $18, $19, draw #if we made have a draw to location and not out of index, then draw
@@ -477,6 +875,7 @@ noop
 noop
 
 
+
 moveArrows:
 addi $18, $0, 199
 addi $19, $0, 220 
@@ -490,6 +889,8 @@ noop
 noop
 noop
 noop
+
+
 
 sweep2:
 addi $18, $18, 2 #largely same as in sweepDraw but avoiding 2+ jals in loops
@@ -517,6 +918,7 @@ noop
 noop
 
 
+
 moveNext:
 blt $18, $19, sweep2 
 noop
@@ -532,6 +934,7 @@ noop
 noop
 
 
+
 deleteArrow:
 sw $0, 0($18)
 sw $0, 1($18)
@@ -543,6 +946,7 @@ noop
 noop
 
 
+
 genArrows:
 addi $20, $0, 400
 addi $24, $0, 500 #max stored arrow for gen in memory addr.
@@ -552,6 +956,8 @@ noop
 noop
 noop
 noop
+
+
 
 sweep3:
 noop
@@ -577,6 +983,8 @@ noop
 noop
 noop
 noop
+
+
 
 addi $13,$0,1
 bne  $22,$13,set23left
@@ -614,6 +1022,7 @@ noop
 noop
 
 
+
 set23left:
 addi $23,$0,38000        #lw $23, 2($20) #arrow bottom location, again, if present
 j conttinue
@@ -622,6 +1031,7 @@ noop
 noop
 noop
 noop
+
 
 
 set23up:
@@ -634,6 +1044,7 @@ noop
 noop
 
 
+
 set23down:
 addi $23,$0,38200        #lw $23, 2($20) #arrow bottom location, again, if present
 j conttinue
@@ -642,6 +1053,7 @@ noop
 noop
 noop
 noop
+
 
 
 set23right:
@@ -688,6 +1100,7 @@ noop
 noop
 
 
+
 placeArrowInMemLoop:
 noop
 noop
@@ -718,6 +1131,7 @@ noop
 noop
 noop
 noop
+
 
 
 placeArrow:
@@ -759,6 +1173,7 @@ noop
 noop
 
 
+
 finishGen:
 addi $21,$0,0
 addi $22,$0,0
@@ -798,8 +1213,97 @@ noop
 
 
 
+checkPause:
+lw $16, 813($0)
+bne $16, $28, pause
+noop
+noop
+noop
+noop
+noop
+jr $31
+noop
+noop
+noop
+noop
+noop
 
 
+
+pause:
+noop
+noop
+noop
+noop
+noop
+addi $28, $0, 0
+j pauseLoop
+noop
+noop
+noop
+noop
+noop
+
+pauseLoop:
+noop
+noop
+noop
+noop
+noop
+lw $16, 813($0)
+bne $16, $28, endPause
+noop
+noop
+noop
+noop
+noop
+lw $16, 812($0) #to allow resets from the pause screen as well, yeee
+bne $16, $28, reset
+noop
+noop
+noop
+noop
+noop
+addi $16, $0, 0
+j pauseLoop
+noop
+noop
+noop
+noop
+noop
+
+
+
+endPause:
+noop
+noop
+noop
+noop
+noop
+addi $28, $0, 0
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkReset:
+lw $16, 812($0)
+bne $16, $28, reset
+noop
+noop
+noop
+noop
+noop
+jr $31
+noop
+noop
+noop
+noop
+noop
 
 
 
