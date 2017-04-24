@@ -2,136 +2,196 @@
 TimeQuest Timing Analyzer Summary
 ------------------------------------------------------------
 
-Type  : Slow 1200mV 85C Model Setup 'clock'
-Slack : -21.515
-TNS   : -25459.589
+Type  : Slow 1200mV 85C Model Setup 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -10.352
+TNS   : -2392.277
 
-Type  : Slow 1200mV 85C Model Setup 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : -6.693
-TNS   : -38.807
+Type  : Slow 1200mV 85C Model Setup 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : -6.196
+TNS   : -32.059
 
-Type  : Slow 1200mV 85C Model Setup 'timer:processor_timer|count[0]'
-Slack : -2.340
-TNS   : -2.340
+Type  : Slow 1200mV 85C Model Setup 'p1|altpll_component|pll|clk[2]'
+Slack : -0.308
+TNS   : -0.308
 
-Type  : Slow 1200mV 85C Model Hold 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : -0.496
-TNS   : -1.481
-
-Type  : Slow 1200mV 85C Model Hold 'clock'
-Slack : -0.172
-TNS   : -0.172
-
-Type  : Slow 1200mV 85C Model Hold 'timer:processor_timer|count[0]'
-Slack : 0.334
+Type  : Slow 1200mV 85C Model Setup 'CLOCK_50'
+Slack : 16.103
 TNS   : 0.000
 
-Type  : Slow 1200mV 85C Model Recovery 'clock'
-Slack : -7.258
-TNS   : -638.382
-
-Type  : Slow 1200mV 85C Model Removal 'clock'
-Slack : 1.677
+Type  : Slow 1200mV 85C Model Hold 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.388
 TNS   : 0.000
 
-Type  : Slow 1200mV 85C Model Minimum Pulse Width 'clock'
-Slack : -3.000
-TNS   : -8143.351
-
-Type  : Slow 1200mV 85C Model Minimum Pulse Width 'timer:processor_timer|count[0]'
-Slack : -1.285
-TNS   : -1.285
-
-Type  : Slow 1200mV 85C Model Minimum Pulse Width 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : 0.397
+Type  : Slow 1200mV 85C Model Hold 'CLOCK_50'
+Slack : 0.409
 TNS   : 0.000
 
-Type  : Slow 1200mV 0C Model Setup 'clock'
-Slack : -19.775
-TNS   : -23303.393
-
-Type  : Slow 1200mV 0C Model Setup 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : -6.259
-TNS   : -36.303
-
-Type  : Slow 1200mV 0C Model Setup 'timer:processor_timer|count[0]'
-Slack : -2.019
-TNS   : -2.019
-
-Type  : Slow 1200mV 0C Model Hold 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : -0.340
-TNS   : -0.669
-
-Type  : Slow 1200mV 0C Model Hold 'clock'
-Slack : -0.174
-TNS   : -0.174
-
-Type  : Slow 1200mV 0C Model Hold 'timer:processor_timer|count[0]'
-Slack : 0.328
+Type  : Slow 1200mV 85C Model Hold 'p1|altpll_component|pll|clk[2]'
+Slack : 0.443
 TNS   : 0.000
 
-Type  : Slow 1200mV 0C Model Recovery 'clock'
-Slack : -6.630
-TNS   : -581.628
-
-Type  : Slow 1200mV 0C Model Removal 'clock'
-Slack : 1.604
+Type  : Slow 1200mV 85C Model Hold 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 1.123
 TNS   : 0.000
 
-Type  : Slow 1200mV 0C Model Minimum Pulse Width 'clock'
-Slack : -3.000
-TNS   : -8047.783
+Type  : Slow 1200mV 85C Model Recovery 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -3.519
+TNS   : -287.970
 
-Type  : Slow 1200mV 0C Model Minimum Pulse Width 'timer:processor_timer|count[0]'
-Slack : -1.285
-TNS   : -1.285
-
-Type  : Slow 1200mV 0C Model Minimum Pulse Width 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : 0.317
+Type  : Slow 1200mV 85C Model Recovery 'p1|altpll_component|pll|clk[2]'
+Slack : 12.626
 TNS   : 0.000
 
-Type  : Fast 1200mV 0C Model Setup 'clock'
-Slack : -10.751
-TNS   : -11372.220
-
-Type  : Fast 1200mV 0C Model Setup 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : -3.351
-TNS   : -18.947
-
-Type  : Fast 1200mV 0C Model Setup 'timer:processor_timer|count[0]'
-Slack : -0.769
-TNS   : -0.769
-
-Type  : Fast 1200mV 0C Model Hold 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : -0.291
-TNS   : -0.825
-
-Type  : Fast 1200mV 0C Model Hold 'clock'
-Slack : -0.150
-TNS   : -0.150
-
-Type  : Fast 1200mV 0C Model Hold 'timer:processor_timer|count[0]'
-Slack : 0.112
+Type  : Slow 1200mV 85C Model Removal 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 1.546
 TNS   : 0.000
 
-Type  : Fast 1200mV 0C Model Recovery 'clock'
-Slack : -3.331
-TNS   : -284.784
-
-Type  : Fast 1200mV 0C Model Removal 'clock'
-Slack : 0.587
+Type  : Slow 1200mV 85C Model Removal 'p1|altpll_component|pll|clk[2]'
+Slack : 5.774
 TNS   : 0.000
 
-Type  : Fast 1200mV 0C Model Minimum Pulse Width 'clock'
-Slack : -3.000
-TNS   : -4371.830
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.452
+TNS   : 0.000
 
-Type  : Fast 1200mV 0C Model Minimum Pulse Width 'timer:processor_timer|count[0]'
-Slack : -1.000
-TNS   : -1.000
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'CLOCK_50'
+Slack : 9.759
+TNS   : 0.000
 
-Type  : Fast 1200mV 0C Model Minimum Pulse Width 'DX:d_x|register:I|loop1[3].dffe_temp'
-Slack : 0.127
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'p1|altpll_component|pll|clk[2]'
+Slack : 19.710
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 49.700
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -9.334
+TNS   : -2126.182
+
+Type  : Slow 1200mV 0C Model Setup 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : -5.845
+TNS   : -30.350
+
+Type  : Slow 1200mV 0C Model Setup 'p1|altpll_component|pll|clk[2]'
+Slack : 0.542
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'CLOCK_50'
+Slack : 16.467
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.322
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'CLOCK_50'
+Slack : 0.366
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'p1|altpll_component|pll|clk[2]'
+Slack : 0.400
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 1.138
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Recovery 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -3.018
+TNS   : -245.865
+
+Type  : Slow 1200mV 0C Model Recovery 'p1|altpll_component|pll|clk[2]'
+Slack : 13.469
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Removal 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 1.374
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Removal 'p1|altpll_component|pll|clk[2]'
+Slack : 5.103
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.356
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : 9.777
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'p1|altpll_component|pll|clk[2]'
+Slack : 19.711
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 49.702
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -4.859
+TNS   : -1118.160
+
+Type  : Fast 1200mV 0C Model Setup 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : -2.826
+TNS   : -14.255
+
+Type  : Fast 1200mV 0C Model Setup 'p1|altpll_component|pll|clk[2]'
+Slack : 4.369
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'CLOCK_50'
+Slack : 18.037
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.075
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'CLOCK_50'
+Slack : 0.190
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'p1|altpll_component|pll|clk[2]'
+Slack : 0.195
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.518
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Recovery 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : -1.636
+TNS   : -130.192
+
+Type  : Fast 1200mV 0C Model Recovery 'p1|altpll_component|pll|clk[2]'
+Slack : 15.985
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Removal 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.601
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Removal 'p1|altpll_component|pll|clk[2]'
+Slack : 2.909
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'CP4_processor_sj166:myprocessor|DX:d_x|register:I|loop1[3].dffe_temp'
+Slack : 0.228
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : 9.438
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'p1|altpll_component|pll|clk[2]'
+Slack : 19.753
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'div|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 49.761
 TNS   : 0.000
 
 ------------------------------------------------------------

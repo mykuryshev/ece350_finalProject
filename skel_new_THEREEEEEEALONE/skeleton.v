@@ -56,8 +56,7 @@ module skeleton(resetn,
 	
 	wire[7:0] debounced_ps2;
 	wire ps2_indicator;
-	wire[7:0] key_reg_data;
-	wire[31:0] reg29_data;
+	wire[31:0] key_reg_data, reg29_data, reg14_data;
 	
 	CP4_processor_sj166 myprocessor(.clock(clock), .reset(~resetn), 
 												.dmem_data_in(debug_data_in), .dmem_address(debug_addr), .vga_address(vga_address), 
@@ -94,7 +93,7 @@ module skeleton(resetn,
 	Hexadecimal_To_Seven_Segment hex1(key_reg_data[3:0], seg1);
 	Hexadecimal_To_Seven_Segment hex2(key_reg_data[7:4], seg2);
 	
-	//These are hardwired to the ps2 scan code
+	//These are hardwired to the ps2 scan code: Just for debugging...
 	Hexadecimal_To_Seven_Segment hex3(ps2_out[3:0], seg3);
 	Hexadecimal_To_Seven_Segment hex4(ps2_out[7:4], seg4);
 	
@@ -102,8 +101,9 @@ module skeleton(resetn,
 	Hexadecimal_To_Seven_Segment hex5(reg29_data[3:0], seg5);
 	Hexadecimal_To_Seven_Segment hex6(reg29_data[7:4], seg6);
 	
-	//Hexadecimal_To_Seven_Segment hex7(4'b0, seg7);
-	//Hexadecimal_To_Seven_Segment hex8(4'b0, seg8);
+	//These 2 are hardwired to register 14 for score keeping
+	Hexadecimal_To_Seven_Segment hex7(reg14_data[3:0], seg7);
+	Hexadecimal_To_Seven_Segment hex8(reg14_data[7:4], seg8);
 	
 	// some LEDs that you could use for debugging if you wanted  for project
 	assign leds = vga_index;
