@@ -184,8 +184,8 @@ lw $3, 5($0)
 jal drawScreen
 addi $28, $0, 0 
 addi $6, $0, 0 #reset cycle count
-addi $10, $0, 65000 #set default speed of game on rest
-sll $10, $10, 2 #standard, normal delay 
+addi $10, $0, 10000 #set default speed of game on rest
+sll $10, $10, 1 #standard, normal delay 
 addi $12, $0, 0 #set 1 player mode on reset
 jal clearCurrentArrowsInMem
 noop
