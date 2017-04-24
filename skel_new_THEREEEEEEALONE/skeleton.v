@@ -61,7 +61,8 @@ module skeleton(resetn,
 	
 	CP4_processor_sj166 myprocessor(.clock(clock), .reset(~resetn), 
 												.dmem_data_in(debug_data_in), .dmem_address(debug_addr), .vga_address(vga_address), 
-												.vga_out(vga_index), .vga_clock(VGA_CLK), .key_press_ind(ps2_indicator), .key_press_data(debounced_ps2), 
+												.vga_out(vga_index), .vga_clock(VGA_CLK), 
+												.key_press_ind28(ps2_indicator_reg28), .key_press_data(debounced_ps2), .key_press_ind30(ps2_indicator_reg30),
 												.reg28_data(key_reg_data), .reg29_data(reg29_data));
 	
 	
@@ -77,9 +78,11 @@ module skeleton(resetn,
 	//mips logic includes for 2 player, but not in hardware yet!!!
 	wire upKey, leftKey, downKey, rightKey, oneKey, twoKey, threeKey, fourKey, fiveKey, 
 		  enterKey, wKey, aKey, sKey, dKey, tabKey, pKey;
-	assign ps2_indicator = upKey || leftKey || downKey || rightKey || oneKey || twoKey || 
-			threeKey || fourKey || fiveKey || tKey || wKey || aKey || sKey || dKey || 
-			rKey || pKey;
+	
+	assign ps2_indicator_reg28 = upKey || leftKey || downKey || rightKey || oneKey || twoKey || 
+			threeKey || fourKey || fiveKey || tKey || rKey || pKey;
+		
+	assign ps2_indicator_reg30	= wKey || aKey || sKey || dKey;
 
 	ps2_handler handleps2(debounced_ps2, upKey, leftKey, downKey, rightKey, oneKey, 
 			twoKey, threeKey, fourKey, fiveKey, tKey, wKey, aKey, sKey, dKey, rKey, pKey);
@@ -87,7 +90,7 @@ module skeleton(resetn,
 	
 	//lcd mylcd(clock, ~resetn, 1'b1, ps2_out, lcd_data, lcd_rw, lcd_en, lcd_rs, lcd_on, lcd_blon);
 	
-	//These 2 are hardwired to register 28
+	//These 2 are hardwired to register 28 for keyboard output
 	Hexadecimal_To_Seven_Segment hex1(key_reg_data[3:0], seg1);
 	Hexadecimal_To_Seven_Segment hex2(key_reg_data[7:4], seg2);
 	
@@ -95,11 +98,11 @@ module skeleton(resetn,
 	Hexadecimal_To_Seven_Segment hex3(ps2_out[3:0], seg3);
 	Hexadecimal_To_Seven_Segment hex4(ps2_out[7:4], seg4);
 	
-	//Hexadecimal_To_Seven_Segment hex5(4'b0, seg5);
-	//These 2 are harwired to register 29
-	Hexadecimal_To_Seven_Segment hex6(reg29_data[3:0], seg6);
-	Hexadecimal_To_Seven_Segment hex7(reg29_data[7:4], seg7);
+	//These 2 are harwired to register 29 for score keeping
+	Hexadecimal_To_Seven_Segment hex5(reg29_data[3:0], seg5);
+	Hexadecimal_To_Seven_Segment hex6(reg29_data[7:4], seg6);
 	
+	//Hexadecimal_To_Seven_Segment hex7(4'b0, seg7);
 	//Hexadecimal_To_Seven_Segment hex8(4'b0, seg8);
 	
 	// some LEDs that you could use for debugging if you wanted  for project

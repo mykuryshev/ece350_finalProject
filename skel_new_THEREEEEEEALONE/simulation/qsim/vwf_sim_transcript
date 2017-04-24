@@ -26,11 +26,11 @@ Info: Running Quartus Prime EDA Netlist Writer
     Info: devices manufactured by Intel and sold by Intel or its 
     Info: authorized distributors.  Please refer to the applicable 
     Info: agreement for further details.
-    Info: Processing started: Sun Apr 23 15:50:04 2017
+    Info: Processing started: Mon Apr 24 15:27:13 2017
 Info: Command: quartus_eda --gen_testbench --tool=modelsim_oem --format=verilog --write_settings_files=off skeleton -c skeleton --vector_source=C:/Users/Saumya/Desktop/ece350_finalProject/skel_new_THEREEEEEEALONE/key_processor_test.vwf --testbench_file=C:/Users/Saumya/Desktop/ece350_finalProject/skel_new_THEREEEEEEALONE/simulation/qsim/key_processor_test.vwf.vt
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 
-test bench files
+utput pin "memory_out[8]" in vector source file when writing test bench files
 
 Completed successfully. 
 
@@ -57,15 +57,15 @@ Info: Running Quartus Prime EDA Netlist Writer
     Info: devices manufactured by Intel and sold by Intel or its 
     Info: authorized distributors.  Please refer to the applicable 
     Info: agreement for further details.
-    Info: Processing started: Sun Apr 23 15:50:06 2017
+    Info: Processing started: Mon Apr 24 15:27:15 2017
 Info: Command: quartus_eda --write_settings_files=off --simulation=on --functional=on --flatten_buses=off --tool=modelsim_oem --format=verilog --output_directory=C:/Users/Saumya/Desktop/ece350_finalProject/skel_new_THEREEEEEEALONE/simulation/qsim/ skeleton -c skeleton
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (204019): Generated file skeleton.vo in folder "C:/Users/Saumya/Desktop/ece350_finalProject/skel_new_THEREEEEEEALONE/simulation/qsim//" for EDA simulation tool
 Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 602 megabytes
-    Info: Processing ended: Sun Apr 23 15:50:10 2017
-    Info: Elapsed time: 00:00:04
-    Info: Total CPU time (on all processors): 00:00:04
+    Info: Peak virtual memory: 600 megabytes
+    Info: Processing ended: Mon Apr 24 15:27:17 2017
+    Info: Elapsed time: 00:00:02
+    Info: Total CPU time (on all processors): 00:00:03
 
 Completed successfully. 
 
@@ -83,11 +83,12 @@ Reading C:/intelFPGA_lite/16.1/modelsim_ase/tcl/vsim/pref.tcl
 
 # 10.5b
 
-# do skeleton.do
 
+# do skeleton.do
 # ** Warning: (vlib-34) Library already exists at "work".
+
 # Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 15:50:10 on Apr 23,2017
+# Start time: 15:27:19 on Apr 24,2017
 # vlog -work work skeleton.vo 
 # -- Compiling module CP4_processor_sj166
 
@@ -95,22 +96,22 @@ Reading C:/intelFPGA_lite/16.1/modelsim_ase/tcl/vsim/pref.tcl
 # 
 # Top level modules:
 # 	CP4_processor_sj166
-# End time: 15:50:13 on Apr 23,2017, Elapsed time: 0:00:03
-# Errors: 0, Warnings: 0
 
+# End time: 15:27:20 on Apr 24,2017, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
 # Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 15:50:13 on Apr 23,2017
+# Start time: 15:27:20 on Apr 24,2017
 # vlog -work work key_processor_test.vwf.vt 
 
 # -- Compiling module CP4_processor_sj166_vlg_vec_tst
 # 
 # Top level modules:
 # 	CP4_processor_sj166_vlg_vec_tst
-# End time: 15:50:13 on Apr 23,2017, Elapsed time: 0:00:00
+# End time: 15:27:20 on Apr 24,2017, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 
 # vsim -novopt -c -t 1ps -L cycloneive_ver -L altera_ver -L altera_mf_ver -L 220model_ver -L sgate_ver -L altera_lnsim_ver work.CP4_processor_sj166_vlg_vec_tst 
-# Start time: 15:50:13 on Apr 23,2017
+# Start time: 15:27:21 on Apr 24,2017
 # Loading work.CP4_processor_sj166_vlg_vec_tst
 # Loading work.CP4_processor_sj166
 # Loading work.hard_block
@@ -125,9 +126,8 @@ Reading C:/intelFPGA_lite/16.1/modelsim_ase/tcl/vsim/pref.tcl
 # Loading cycloneive_ver.cycloneive_ram_register
 # Loading cycloneive_ver.cycloneive_ram_pulse_generator
 # Loading altera_ver.PRIM_GDFF_LOW
-# ** Warning: Design size of 30119 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# ** Warning: Design size of 30577 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
 # Expect performance to be adversely affected.
-
 # after#26
 
 # Simulation time: 0 ps
@@ -162,17 +162,15 @@ Reading C:/intelFPGA_lite/16.1/modelsim_ase/tcl/vsim/pref.tcl
 
 # Simulation time: 0 ps
 
-# Simulation time: 440000 ps
+# Simulation time: 620000 ps
 
-# Simulation time: 440000 ps
+# Simulation time: 620000 ps
 
-# Simulation time: 440000 ps
+# Simulation time: 620000 ps
 
-# Simulation time: 440000 ps
-
-# ** Note: $finish    : key_processor_test.vwf.vt(65)
+# ** Note: $finish    : key_processor_test.vwf.vt(69)
 #    Time: 1 us  Iteration: 0  Instance: /CP4_processor_sj166_vlg_vec_tst
-# End time: 15:51:06 on Apr 23,2017, Elapsed time: 0:00:53
+# End time: 15:28:10 on Apr 24,2017, Elapsed time: 0:00:49
 # Errors: 0, Warnings: 1
 
 Completed successfully. 
@@ -185,7 +183,7 @@ Reading C:/Users/Saumya/Desktop/ece350_finalProject/skel_new_THEREEEEEEALONE/sim
 
 Processing channel transitions... 
 
-Writing the resulting VWF to C:/Users/Saumya/Desktop/ece350_finalProject/skel_new_THEREEEEEEALONE/simulation/qsim/skeleton_20170423155106.sim.vwf
+Writing the resulting VWF to C:/Users/Saumya/Desktop/ece350_finalProject/skel_new_THEREEEEEEALONE/simulation/qsim/skeleton_20170424152810.sim.vwf
 
 Finished VCD to VWF conversion.
 
