@@ -74,10 +74,15 @@ module skeleton(resetn,
 	ps2_fsm fsm(ps2_key_pressed, clock, ~resetn, ps2_key_data, debounced_ps2);
 	
 	//Handler: Processes debounced PS2 into indicator signals for the 4 keys that we're interested in
-	wire upKey, leftKey, downKey, rightKey;
-	assign ps2_indicator = upKey || leftKey || downKey || rightKey;
+	//mips logic includes for 2 player, but not in hardware yet!!!
+	wire upKey, leftKey, downKey, rightKey, oneKey, twoKey, threeKey, fourKey, fiveKey, 
+		  enterKey, wKey, aKey, sKey, dKey, tabKey, pKey;
+	assign ps2_indicator = upKey || leftKey || downKey || rightKey || oneKey || twoKey || 
+			threeKey || fourKey || fiveKey || tKey || wKey || aKey || sKey || dKey || 
+			rKey || pKey;
 
-	ps2_handler handleps2(debounced_ps2, upKey, leftKey, downKey, rightKey);
+	ps2_handler handleps2(debounced_ps2, upKey, leftKey, downKey, rightKey, oneKey, 
+			twoKey, threeKey, fourKey, fiveKey, tKey, wKey, aKey, sKey, dKey, rKey, pKey);
 	
 	
 	//lcd mylcd(clock, ~resetn, 1'b1, ps2_out, lcd_data, lcd_rw, lcd_en, lcd_rs, lcd_on, lcd_blon);
