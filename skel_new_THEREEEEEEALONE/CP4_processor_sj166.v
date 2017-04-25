@@ -1087,6 +1087,12 @@ module regfile_mod(
 	
 	wire[1023:0] Reg_data; //Output from the registers
 	
+	wire[2:0] random_shit;
+	random myRandom(.clock(clock), .reset(reset), .small_data(random_shit));
+	
+	//Register 7 is hardwired to random numbers from 1 to 4
+	assign Reg_data[255:227] = 29'b0;
+	assign Reg_data[226:224] = random_shit;
 	
 	//Create write enables for registers 0 - 29
 	genvar i; 
@@ -1098,7 +1104,13 @@ module regfile_mod(
 	
 	//Starts at 1 because register 0 is fixed to 0; ends at 28 because register 29 is reserved for a timer output
 	generate
-	for(i = 1; i < 28; i = i+1) begin: loop2
+	for(i = 1; i < 7; i = i+1) begin: loop2
+		register reg_temp(clock, data_writeReg, register_write_enable_bits[i], Reg_data[32*i+31:32*i], ctrl_reset);
+		end
+	endgenerate
+	
+	generate
+	for(i = 8; i < 28; i = i+1) begin: loop5
 		register reg_temp(clock, data_writeReg, register_write_enable_bits[i], Reg_data[32*i+31:32*i], ctrl_reset);
 		end
 	endgenerate
