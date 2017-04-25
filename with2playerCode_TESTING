@@ -107,6 +107,9 @@ addi $27, $0, 38100
 
 
 sw $0, 900($0) #reset score
+sw $0, 901($0)
+addi $14, $0, 0
+addi $29, $0, 0
 j menu
 noop
 noop
@@ -1991,7 +1994,7 @@ noop
 
 
 
-set23left2Player1:
+set23left2Player:
 addi $23,$0,38140    #for player 1
 addi $13,$0,37810  	 #for player 2
 j conttinue2Player
@@ -2003,7 +2006,7 @@ noop
 
 
 
-set23up2Player1:
+set23up2Player:
 addi $23,$0,37880        #for player 1
 addi $13,$0,38210  		 #for player 2
 j conttinue2Player
@@ -2015,7 +2018,7 @@ noop
 
 
 
-set23down2Player1:
+set23down2Player:
 addi $23,$0,37950        #for player 1
 addi $13,$0,38280  		 #for player 2
 j conttinue2Player
@@ -2027,7 +2030,7 @@ noop
 
 
 
-set23right2Player1:
+set23right2Player:
 addi $23,$0,38020        #for player 1
 addi $13,$0,38350  		 #for player 2
 j conttinue2Player
