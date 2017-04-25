@@ -1,13 +1,12 @@
 .text
 main: 
 addi $1, $0, 1 #This is block drawing
-addi $5, $0, 0
-addi $4, $0, 50
+addi $5, $0, 0 #addi $4, $0, 50 ###CODE deleting
 addi $6, $0, 0
 addi $10, $0, 6500 #65000
 sll $10, $10, 2 #around 1 million now
 addi $9, $9, 0
-addi $29,$0, 1
+addi $29,$0, 0 ### Code change
 addi $11, $0, 1
 
 
@@ -127,6 +126,7 @@ noop
 sw $1, 0($2)    
 addi $2, $2, 1
 addi $5, $5, 1
+addi $4,$0,50 #############NEW CODE
 blt $5, $4, drawLoop
 noop
 noop 
@@ -915,6 +915,29 @@ noop
 noop
 noop
 noop
+addi $1, $0, 5 # Lower arrow bound visual
+addi $2,$0,34560
+sll  $2,$2,3
+noop
+noop
+noop
+noop
+noop
+addi $3, $0, 38400
+sll  $3,$3,3
+noop
+noop
+noop
+noop
+noop
+addi $4,$31,0
+jal drawScreen
+addi $31,$4,0
+noop
+noop
+noop
+noop
+noop
 addi $29,$29,1
 noop
 noop 
@@ -930,6 +953,29 @@ noop
 scoreperfect:
 noop
 noop 
+noop
+noop
+noop
+addi $1, $0, 1
+addi $2,$0,34560
+sll  $2,$2,3
+noop
+noop
+noop
+noop
+noop
+addi $3, $0, 38400
+sll  $3,$3,3
+noop
+noop
+noop
+noop
+noop
+addi $4,$31,0
+jal drawScreen
+addi $31,$4,0
+noop
+noop
 noop
 noop
 noop
