@@ -1,28 +1,28 @@
 # do skeleton.do
 # ** Warning: (vlib-34) Library already exists at "work".
 # Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 15:27:19 on Apr 24,2017
+# Start time: 17:35:48 on Apr 24,2017
 # vlog -work work skeleton.vo 
-# -- Compiling module CP4_processor_sj166
+# -- Compiling module random
 # -- Compiling module hard_block
 # 
 # Top level modules:
-# 	CP4_processor_sj166
-# End time: 15:27:20 on Apr 24,2017, Elapsed time: 0:00:01
+# 	random
+# End time: 17:35:48 on Apr 24,2017, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 15:27:20 on Apr 24,2017
-# vlog -work work key_processor_test.vwf.vt 
-# -- Compiling module CP4_processor_sj166_vlg_vec_tst
+# Start time: 17:35:48 on Apr 24,2017
+# vlog -work work random_test.vwf.vt 
+# -- Compiling module random_vlg_vec_tst
 # 
 # Top level modules:
-# 	CP4_processor_sj166_vlg_vec_tst
-# End time: 15:27:20 on Apr 24,2017, Elapsed time: 0:00:00
+# 	random_vlg_vec_tst
+# End time: 17:35:48 on Apr 24,2017, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# vsim -novopt -c -t 1ps -L cycloneive_ver -L altera_ver -L altera_mf_ver -L 220model_ver -L sgate_ver -L altera_lnsim_ver work.CP4_processor_sj166_vlg_vec_tst 
-# Start time: 15:27:21 on Apr 24,2017
-# Loading work.CP4_processor_sj166_vlg_vec_tst
-# Loading work.CP4_processor_sj166
+# vsim -novopt -c -t 1ps -L cycloneive_ver -L altera_ver -L altera_mf_ver -L 220model_ver -L sgate_ver -L altera_lnsim_ver work.random_vlg_vec_tst 
+# Start time: 17:35:49 on Apr 24,2017
+# Loading work.random_vlg_vec_tst
+# Loading work.random
 # Loading work.hard_block
 # Loading cycloneive_ver.cycloneive_io_obuf
 # Loading cycloneive_ver.cycloneive_io_ibuf
@@ -31,33 +31,9 @@
 # Loading cycloneive_ver.cycloneive_ena_reg
 # Loading cycloneive_ver.cycloneive_lcell_comb
 # Loading altera_ver.dffeas
-# Loading cycloneive_ver.cycloneive_ram_block
-# Loading cycloneive_ver.cycloneive_ram_register
-# Loading cycloneive_ver.cycloneive_ram_pulse_generator
 # Loading altera_ver.PRIM_GDFF_LOW
-# ** Warning: Design size of 30577 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
-# Expect performance to be adversely affected.
 # after#26
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 0 ps
-# Simulation time: 620000 ps
-# Simulation time: 620000 ps
-# Simulation time: 620000 ps
-# ** Note: $finish    : key_processor_test.vwf.vt(69)
-#    Time: 1 us  Iteration: 0  Instance: /CP4_processor_sj166_vlg_vec_tst
-# End time: 15:28:10 on Apr 24,2017, Elapsed time: 0:00:49
-# Errors: 0, Warnings: 1
+# ** Note: $finish    : random_test.vwf.vt(49)
+#    Time: 1 us  Iteration: 0  Instance: /random_vlg_vec_tst
+# End time: 17:35:49 on Apr 24,2017, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

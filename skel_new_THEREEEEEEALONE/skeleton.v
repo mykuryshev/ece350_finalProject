@@ -62,7 +62,7 @@ module skeleton(resetn,
 												.dmem_data_in(debug_data_in), .dmem_address(debug_addr), .vga_address(vga_address), 
 												.vga_out(vga_index), .vga_clock(VGA_CLK), 
 												.key_press_ind28(ps2_indicator_reg28), .key_press_data(debounced_ps2), .key_press_ind30(ps2_indicator_reg30),
-												.reg28_data(key_reg_data), .reg29_data(reg29_data));
+												.reg28_data(key_reg_data), .reg29_data(reg29_data), .reg14_data(reg14_data));
 	
 	
 	// keyboard controller: Interfaces with PS2 at a low level
@@ -75,16 +75,16 @@ module skeleton(resetn,
 	
 	//Handler: Processes debounced PS2 into indicator signals for the 4 keys that we're interested in
 	//mips logic includes for 2 player, but not in hardware yet!!!
-	wire upKey, leftKey, downKey, rightKey, oneKey, twoKey, threeKey, fourKey, fiveKey, 
-		  enterKey, wKey, aKey, sKey, dKey, tabKey, pKey;
+	wire hKey, jKey, kKey, lKey, oneKey, twoKey, threeKey, fourKey, fiveKey, 
+		  enterKey, aKey, sKey, dKey, fKey, tabKey, pKey;
 	
-	assign ps2_indicator_reg28 = upKey || leftKey || downKey || rightKey || oneKey || twoKey || 
+	assign ps2_indicator_reg28 = hKey || jKey || kKey || lKey || oneKey || twoKey || 
 			threeKey || fourKey || fiveKey || tKey || rKey || pKey;
 		
-	assign ps2_indicator_reg30	= wKey || aKey || sKey || dKey;
+	assign ps2_indicator_reg30	= aKey || sKey || dKey || fKey;
 
-	ps2_handler handleps2(debounced_ps2, upKey, leftKey, downKey, rightKey, oneKey, 
-			twoKey, threeKey, fourKey, fiveKey, tKey, wKey, aKey, sKey, dKey, rKey, pKey);
+	ps2_handler handleps2(debounced_ps2, hKey, jKey, kKey, lKey, oneKey, 
+			twoKey, threeKey, fourKey, fiveKey, tKey, aKey, sKey, dKey, fKey, rKey, pKey);
 	
 	
 	//lcd mylcd(clock, ~resetn, 1'b1, ps2_out, lcd_data, lcd_rw, lcd_en, lcd_rs, lcd_on, lcd_blon);
