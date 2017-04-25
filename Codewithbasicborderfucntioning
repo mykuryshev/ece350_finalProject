@@ -527,7 +527,7 @@ noop
 noop
 noop
 noop
-addi $1, $0, 3 # Lower arrow bound visual
+addi $1, $0, 7 # Lower arrow bound visual
 noop
 noop
 noop
@@ -819,13 +819,13 @@ noop
 
 
 checkBounds:
-blt $26, $20, scoreSweep #arrow too high, fails
+blt $26, $20, faill# ###CODE changescoreSweep #arrow too high, fails
 noop
 noop
 noop
 noop
 noop
-blt $21, $26, scoreSweep #arrow too low, late and fails
+blt $21, $26, faill #arrow too low, late and fails
 noop
 noop
 noop
@@ -909,6 +909,41 @@ noop
 noop
 noop
 
+faill:
+noop
+noop
+noop
+noop
+noop
+addi $1, $0, 4 # Lower arrow bound visual
+addi $2,$0,34560
+sll  $2,$2,3
+noop
+noop
+noop
+noop
+noop
+addi $3, $0, 38400
+sll  $3,$3,3
+noop
+noop
+noop
+noop
+noop
+addi $4,$31,0
+jal drawScreen
+addi $31,$4,0
+noop
+noop
+noop
+noop
+noop
+j scoreSweep
+noop
+noop
+noop
+noop
+noop
 scoregood:
 noop
 noop 
