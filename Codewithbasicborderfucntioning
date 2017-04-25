@@ -75,10 +75,10 @@ addi $26, $0, 1 #arrow type
 addi $27, $0, 38000 #arrow bot location, not really needed but had it here
 sw $25, 400($0)
 sw $26, 401($0)
-sw $27, 402($0)
+sw $27, 402($0) #ARROW TYPE 1 is leftmost col
 addi $25, $0, 70
 addi $26, $0, 2
-addi $27, $0, 38100
+addi $27, $0, 38100 #ARROW TYPE 2 is second col from left
 sw $25, 406($0)
 sw $26, 407($0)
 sw $27, 408($0)
@@ -90,19 +90,22 @@ sw $26, 413($0)
 sw $27, 414($0)
 addi $25, $0, 190
 addi $26, $0, 3
-addi $27, $0, 38200
+addi $27, $0, 38200 #ARROW TYPE 3 is third col from left
 sw $25, 418($0)
 sw $26, 419($0)
 sw $27, 420($0)
 addi $25, $0, 250
 addi $26, $0, 4
-addi $27, $0, 38300
+addi $27, $0, 38300 #ARROW TYPE 4 is fourth col from left
 sw $25, 424($0)
 sw $26, 425($0)
 sw $27, 426($0)
-addi $25, $0, 310
+addi $25, $0, 900
 addi $26, $0, 2
 addi $27, $0, 38100
+sw $25, 430($0) ##############NEW CODE
+sw $26, 431($0)
+sw $27, 432($0)
 
 
 sw $0, 900($0) #reset score
@@ -505,7 +508,7 @@ noop
 noop
 noop
 noop
-addi $2,$0,28000
+addi $2,$0,24800
 sll  $2,$2,3
 noop
 noop
@@ -770,10 +773,10 @@ noop
 checkToScore:
 addi $18, $0, 199
 addi $19, $0 ,300
-addi $20,$0, 28000
+addi $20,$0, 26800 ########NEW CODE
 sll  $20,$20,3
-addi $21,$0, 28800
-sll  $21,$21,3
+addi $21,$0, 30800
+sll  $21,$21,3 ###########
 addi $28, $0, 0 #reset inputs
 j scoreSweep
 noop
@@ -828,8 +831,67 @@ noop
 noop
 noop
 noop #lw $29, 900($0)
-addi $29, $29, 1 #increase score by 100 or whatnot
-sw $29, 900($0)
+addi $8,$0,27800####NEW CODE
+noop
+noop 
+noop
+noop
+noop
+sll $8,$8,3
+noop
+noop 
+noop
+noop
+noop
+blt $26,$8,scoregood
+noop
+noop 
+noop
+noop
+noop
+addi $8,$0,29800####NEW CODE
+noop
+noop 
+noop
+noop
+noop
+sll $8,$8,3
+noop
+noop 
+noop
+noop
+noop
+blt $26,$8,scoreperfect
+noop
+noop 
+noop
+noop
+noop
+addi $8,$0,30800####NEW CODE
+noop
+noop 
+noop
+noop
+noop
+sll $8,$8,3
+noop
+noop 
+noop
+noop
+noop
+blt $26,$8,scoregood #### New code #Put the addi 29 back if no work
+noop
+noop 
+noop
+noop
+noop
+backk:
+noop
+noop 
+noop
+noop
+noop
+sw $29, 900($0) #addi $29, $29, 1 #increase score by 100 or whatnot
 addi $11, $0, 0
 addi $1, $0, 0
 addi $3, $26, 0
@@ -847,8 +909,42 @@ noop
 noop
 noop
 
-
-
+scoregood:
+noop
+noop 
+noop
+noop
+noop
+addi $29,$29,1
+noop
+noop 
+noop
+noop
+noop
+j backk
+noop
+noop 
+noop
+noop
+noop
+scoreperfect:
+noop
+noop 
+noop
+noop
+noop
+addi $29,$29,5
+noop
+noop 
+noop
+noop
+noop
+j backk
+noop
+noop 
+noop
+noop
+noop
 end:
 noop
 noop 
@@ -1320,7 +1416,7 @@ noop
 noop
 noop
 noop
-lw $16, 813($0)
+lw $16, 804($0)
 bne $16, $28, endPause
 noop
 noop
