@@ -2105,7 +2105,7 @@ noop
 noop
 noop
 addi $1, $0, 5 # Lower arrow bound visual
-addi $2,$0,34560
+addi $2,$0,34600
 sll  $2,$2,3
 noop
 noop
