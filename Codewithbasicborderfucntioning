@@ -1,12 +1,13 @@
 .text
 main: 
 addi $1, $0, 1 #This is block drawing
-addi $5, $0, 0 #addi $4, $0, 50 ###CODE deleting
+addi $5, $0, 0
+addi $4, $0, 50
 addi $6, $0, 0
 addi $10, $0, 6500 #65000
 sll $10, $10, 2 #around 1 million now
 addi $9, $9, 0
-addi $29,$0, 0 ### Code change
+addi $29,$0, 1
 addi $11, $0, 1
 
 
@@ -118,7 +119,7 @@ noop
 
 
 drawLoop:
-noop
+noop #This uses registers 2 and 3 for bounds, register 4 for size
 noop
 noop
 noop
@@ -126,7 +127,6 @@ noop
 sw $1, 0($2)    
 addi $2, $2, 1
 addi $5, $5, 1
-addi $4,$0,50 #############NEW CODE
 blt $5, $4, drawLoop
 noop
 noop 
@@ -147,14 +147,27 @@ noop
 noop
 noop
 noop
-j sweep
+bne $9, $0, sweep #SAUMS
 noop
 noop
 noop
 noop
 noop
-
-
+addi $2, $0, 2
+noop
+noop
+noop
+noop
+noop
+bne $9, $2, finishDrawing
+noop
+noop
+j blockDrawn
+noop
+noop
+noop
+noop
+noop
 
 drawScreen:
 noop
@@ -576,18 +589,6 @@ noop
 noop
 noop 
 noop
-addi $15, $0, 0
-noop
-noop
-noop
-noop 
-noop
-jal sweepDraw #Erase
-noop
-noop
-noop
-noop
-noop
 jal checkReset
 noop
 noop
@@ -915,29 +916,6 @@ noop
 noop
 noop
 noop
-addi $1, $0, 5 # Lower arrow bound visual
-addi $2,$0,34560
-sll  $2,$2,3
-noop
-noop
-noop
-noop
-noop
-addi $3, $0, 38400
-sll  $3,$3,3
-noop
-noop
-noop
-noop
-noop
-addi $4,$31,0
-jal drawScreen
-addi $31,$4,0
-noop
-noop
-noop
-noop
-noop
 addi $29,$29,1
 noop
 noop 
@@ -953,29 +931,6 @@ noop
 scoreperfect:
 noop
 noop 
-noop
-noop
-noop
-addi $1, $0, 1
-addi $2,$0,34560
-sll  $2,$2,3
-noop
-noop
-noop
-noop
-noop
-addi $3, $0, 38400
-sll  $3,$3,3
-noop
-noop
-noop
-noop
-noop
-addi $4,$31,0
-jal drawScreen
-addi $31,$4,0
-noop
-noop
 noop
 noop
 noop
@@ -1025,16 +980,10 @@ noop
 noop
 noop
 noop
-lw $1, 0($18)
-lw $3, 1($18)
+lw $1, 0($18) #Arrow type
+lw $3, 1($18) #Arrow location
 addi $18, $18, 2
 bne $1, $0, sweep #if no arrow here, just keep sweeping
-noop
-noop
-noop
-noop
-noop
-bne $15, $0, setErase #if wanting to erase, then will set to erase instead
 noop
 noop
 noop
@@ -1050,7 +999,40 @@ noop
 
 
 drawCall:
-blt $18, $19, draw #if we made have a draw to location and not out of index, then draw
+sw $3, 2000($0) #Store the current bottom left of the square in mem for later 
+addi $9, $0, 2
+addi $2, $3, 0 #Set $2 to be current bottom left of square, top left of drawn region
+addi $3, $2, 1920
+noop
+noop
+noop
+noop
+noop
+blt $18, $19, drawLoop #if we made have a draw to location and not out of index, then draw
+noop
+noop
+noop
+noop
+noop
+
+finishDrawing: 
+addi $1, $0, 0
+lw $2, 2000($0)
+noop
+noop
+noop
+noop
+noop
+addi $2, $2, -32000
+addi $3, $2, 1920
+addi $9, $0, 0
+blt $18, $19, drawLoop
+noop
+noop
+noop
+addi $1, $0, 0
+addi $2, $0, 0
+addi $3, $0, 0
 noop
 noop
 noop
@@ -1377,7 +1359,29 @@ noop
 noop
 noop
 sw $0, 2($20) #remove arrow in pregen list
-j finishGen
+noop
+noop
+noop
+noop
+noop
+addi $9, $0, 1   #SAUMS Drawing block in genArrows
+addi $1, $13, 0  #Store arrow type (aka color) in register 1
+addi $3, $23, 0  #Store bottom left in register 3
+addi $2, $23, -32000 #Store top left in register 2
+j drawLoop
+noop
+noop
+noop
+noop
+noop
+
+blockDrawn: 
+addi $9, $0, 0
+addi $1, $0, 0
+addi $3, $0, 0
+addi $3, $0, 0
+
+j finishGen #END SAUMS
 noop
 noop
 noop

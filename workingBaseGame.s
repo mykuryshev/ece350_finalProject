@@ -7,10 +7,9 @@ addi $6, $0, 0
 addi $10, $0, 6500 #65000
 sll $10, $10, 2 #around 1 million now
 addi $9, $9, 0
-addi $29,$0, 1
+addi $29,$0, 0
+addi $14,$0, 0
 addi $11, $0, 1
-
-
 
 addi $3, $0, 38400
 sll $3, $3, 3
@@ -25,103 +24,13 @@ noop
 
 
 
-initScanCodes:
-addi $28, $0, 0 #will store scan code for valid key inputs #key codes stored in memory 800-899, 800 left, 801 up, 802 right, 803 down
-addi $16, $0, 107 #left
-sw $16, 800($0)
-addi $16, $0, 117 #up
-sw $16, 801($0)
-addi $16, $0, 116 #right
-sw $16, 802($0)
-addi $16, $0, 114 #down
-sw $16, 803($0)
-addi $16, $0, 44 #t, start from menu, used
-sw $16, 804($0)
-addi $16, $0, 22 #1, set slow speed in menu, used
-sw $16, 805($0)
-addi $16, $0, 30 #2, set slow speed in menu, used
-sw $16, 806($0)
-addi $16, $0, 38 #3, set slow speed in menu, used
-sw $16, 807($0)
-addi $16, $0, 29 #w, compare to another reg, not 28
-sw $16, 808($0)
-addi $16, $0, 28 #a, compare to another reg, not 28
-sw $16, 809($0)
-addi $16, $0, 27 #s, compare to another reg, not 28
-sw $16, 810($0)
-addi $16, $0, 35 #d, compare to another reg, not 28
-sw $16, 811($0)
-addi $16, $0, 45 #r, reset from anywhere, NEED IN TWO PLAYER!!!
-sw $16, 812($0)
-addi $16, $0, 77 #p, pause from in game, NEED IN TWO PLAYER!!!
-sw $16, 813($0)
-addi $16, $0, 37 #4, set 1 player in menu, used
-sw $16, 814($0)
-addi $16, $0, 46 #5, set 2 player in menu, used
-sw $16, 815($0)
-addi $16, $0, 0
-j initArrowListInMem
-noop
-noop
-noop
-noop
-noop
-
-
-
-initArrowListInMem:
-addi $25, $0, 10 #initial cycle to appear
-addi $26, $0, 1 #arrow type
-addi $27, $0, 38000 #arrow bot location, not really needed but had it here
-sw $25, 400($0)
-sw $26, 401($0)
-sw $27, 402($0)
-addi $25, $0, 70
-addi $26, $0, 2
-addi $27, $0, 38100
-sw $25, 406($0)
-sw $26, 407($0)
-sw $27, 408($0)
-addi $25, $0, 130
-addi $26, $0, 1
-addi $27, $0, 38000
-sw $25, 412($0)
-sw $26, 413($0)
-sw $27, 414($0)
-addi $25, $0, 190
-addi $26, $0, 3
-addi $27, $0, 38200
-sw $25, 418($0)
-sw $26, 419($0)
-sw $27, 420($0)
-addi $25, $0, 250
-addi $26, $0, 4
-addi $27, $0, 38300
-sw $25, 424($0)
-sw $26, 425($0)
-sw $27, 426($0)
-addi $25, $0, 310
-addi $26, $0, 2
-addi $27, $0, 38100
-
-
-sw $0, 900($0) #reset score
-j menu
-noop
-noop
-noop
-noop
-noop
-
-
-
 drawLoop:
 noop
 noop
 noop
 noop
 noop
-sw $1, 0($2)    
+sw $1, 0($2)      
 addi $2, $2, 1
 addi $5, $5, 1
 blt $5, $4, drawLoop
@@ -183,17 +92,14 @@ addi $2, $0, 0
 lw $3, 5($0)
 jal drawScreen
 addi $28, $0, 0 
+addi $30, $0, 0
 addi $6, $0, 0 #reset cycle count
 addi $10, $0, 10000 #set default speed of game on rest
 sll $10, $10, 1 #standard, normal delay 
 addi $12, $0, 0 #set 1 player mode on reset
-jal clearCurrentArrowsInMem
-noop
-noop
-noop
-noop
-noop
-j initArrowListInMem
+addi $29, $0, 0
+addi $14, $0, 0
+j clearCurrentArrowsInMem
 noop
 noop
 noop
@@ -205,17 +111,26 @@ noop
 clearCurrentArrowsInMem:
 addi $18, $0, 199
 addi $19, $0, 300
+addi $2, $0, 599
+addi $3, $0, 700
 clearArrowLoop:
 addi $18, $18, 2
+addi $2, $2, 2
 sw $0, 0($18)
 sw $0, 1($18)
+sw $0, 0($2)
+sw $0, 1($2)
 blt $18, $19, clearArrowLoop
 noop
 noop
 noop
 noop
 noop
-jr $31
+addi $18, $0, 0
+addi $19, $0, 0
+addi $2, $0, 0
+addi $3, $0, 0
+j initArrowListInMem
 noop
 noop
 noop
@@ -225,12 +140,18 @@ noop
 
 
 menu:
-noop
+noop #addi $14, $0, 10 #TEST
 noop
 noop
 noop
 noop
 jal checkStart #not worried about setPlayers yet...
+noop
+noop
+noop
+noop
+noop
+jal setPlayers
 noop
 noop
 noop
@@ -253,21 +174,21 @@ noop
 
 setSpeed:
 sw $31, 1337($0) #just some hidden spot, who dares to use it
-lw $16, 805($0)
+addi $16, $0, 22
 bne $16, $28, setSlow
 noop
 noop
 noop
 noop
 noop
-lw $16, 806($0)
+addi $16, $0, 30
 bne $16, $28, setMedium
 noop
 noop
 noop
 noop
 noop
-lw $16, 807($0)
+addi $16, $0, 38
 bne $16, $28, setFast
 noop
 noop
@@ -363,14 +284,14 @@ noop
 
 
 setPlayers:
-lw $16, 814($0)
+addi $16, $0, 37
 bne $16, $28, setOnePlayer
 noop
 noop
 noop
 noop
 noop
-lw $16, 815($0)
+addi $16, $0, 46
 bne $16, $28, setTwoPlayer
 noop
 noop
@@ -426,7 +347,7 @@ noop
 noop
 noop
 noop
-lw $16, 804($0)
+addi $16, $0, 44
 noop
 noop
 noop
@@ -459,7 +380,13 @@ noop
 noop
 noop
 addi $28, $0, 0
-j beginning
+bne $12, $0, beginning 
+noop
+noop
+noop
+noop
+noop
+j beginning2Player
 noop
 noop
 noop
@@ -499,6 +426,54 @@ noop
 noop
 noop
 noop
+addi $1, $0, 7 # Lower arrow bound visual
+noop
+noop
+noop
+noop
+noop
+lw $2, 700($0)
+noop
+noop
+noop
+noop
+noop
+addi $3, $2, 640
+noop
+noop
+noop
+noop
+noop
+jal drawScreen
+noop
+noop
+noop
+noop
+noop
+addi $1, $0, 3 # Lower arrow bound visual
+noop
+noop
+noop
+noop
+noop
+lw $2, 704($0)
+noop
+noop
+noop
+noop
+noop
+addi $3, $2, 640
+noop
+noop
+noop
+noop
+noop
+jal drawScreen
+noop
+noop
+noop
+noop
+noop
 jal sweepDraw #Draw real stuff
 noop
 noop
@@ -529,29 +504,23 @@ noop
 noop
 noop 
 noop
-jal sweepDraw #Erase
-noop
-noop
-noop
-noop
-noop
 jal checkReset
 noop
 noop
 noop
 noop
 noop
-bne $28, $0, skipstep 
-noop
-noop
-noop
-noop 
-noop
 jal checkInputsInLevel
 noop
 noop
 noop
 noop 
+noop
+jal sweepDraw #Erase
+noop
+noop
+noop
+noop
 noop
 j skipstep
 noop
@@ -644,7 +613,12 @@ noop
 noop
 noop
 noop
-lw $16, 800($0) #left
+addi $16,$0,51 #h
+noop
+noop
+noop
+noop
+noop
 addi $17, $0, 1
 bne $16, $28, checkToScore
 noop
@@ -652,7 +626,12 @@ noop
 noop
 noop 
 noop
-lw $16, 801($0) #up
+addi $16, $0,59 #j
+noop
+noop
+noop
+noop
+noop
 addi $17, $0, 2
 bne $16, $28, checkToScore
 noop
@@ -660,7 +639,12 @@ noop
 noop
 noop 
 noop
-lw $16, 802($0) #right
+addi $16, $0,66 #k
+noop
+noop
+noop
+noop
+noop
 addi $17, $0, 3
 bne $16, $28, checkToScore
 noop
@@ -668,7 +652,12 @@ noop
 noop
 noop
 noop
-lw $16, 803($0) #down
+addi $16,$0,75 #l
+noop
+noop
+noop
+noop
+noop
 addi $17, $0, 4
 bne $16, $28, checkToScore
 noop
@@ -758,7 +747,7 @@ noop
 noop
 noop
 noop
-noop #lw $29, 900($0)
+noop 
 addi $29, $29, 1 #increase score by 100 or whatnot
 sw $29, 900($0)
 addi $11, $0, 0
@@ -770,7 +759,7 @@ noop
 noop 
 noop
 noop
-noop #addi $29, $0, 0
+noop 
 j draw
 noop
 noop
@@ -881,7 +870,7 @@ addi $18, $0, 199
 addi $19, $0, 220 
 addi $20, $0, 64000 #setting max arrow location
 addi $20, $20, 64000
-addi $20, $20,64000
+addi $20, $20, 64000
 addi $20, $20, 6400
 j sweep2
 noop
@@ -1214,7 +1203,7 @@ noop
 
 
 checkPause:
-lw $16, 813($0)
+addi $16, $0, 77
 bne $16, $28, pause
 noop
 noop
@@ -1250,14 +1239,14 @@ noop
 noop
 noop
 noop
-lw $16, 813($0)
+addi $16, $0, 44
 bne $16, $28, endPause
 noop
 noop
 noop
 noop
 noop
-lw $16, 812($0) #to allow resets from the pause screen as well, yeee
+addi $16, $0, 45 #to allow resets from the pause screen as well, yeee
 bne $16, $28, reset
 noop
 noop
@@ -1291,7 +1280,7 @@ noop
 
 
 checkReset:
-lw $16, 812($0)
+addi $16, $0, 45
 bne $16, $28, reset
 noop
 noop
@@ -1299,6 +1288,993 @@ noop
 noop
 noop
 jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+
+
+
+
+
+beginning2Player:
+addi $18, $0, 201
+addi $19, $0, 300
+addi $2, $0, 601
+addi $3, $0, 700
+j inLevel2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+inLevel2Player:
+noop
+noop
+noop
+noop
+noop
+jal genArrows2Player
+noop
+noop
+noop
+noop
+noop
+addi $15, $0, 1 #to draw
+noop
+noop
+noop
+noop
+noop
+jal sweepDrawPlayer1 #Draw real stuff
+noop
+noop
+noop
+noop
+noop 
+jal sweepDrawPlayer2
+noop
+noop
+noop
+noop
+noop
+jal checkPause
+noop
+noop
+noop
+noop
+noop
+jal stall2Player #Chill
+noop
+noop
+noop
+noop 
+noop
+addi $15, $0, 0
+noop
+noop
+noop
+noop 
+noop
+jal sweepDrawPlayer1 #Draw real stuff
+noop
+noop
+noop
+noop
+noop 
+addi $15, $0, 0
+jal sweepDrawPlayer2
+noop
+noop
+noop
+noop
+noop
+jal checkReset
+noop
+noop
+noop
+noop
+noop
+bne $28, $0, skipstep2Player1
+noop
+noop
+noop
+noop 
+noop
+jal checkInputsInLevel2Player1
+noop
+noop
+noop
+noop 
+noop
+j skipstep2Player1
+noop
+noop
+noop
+noop
+noop
+
+
+skipstep2Player1:
+noop
+noop
+noop
+noop
+noop
+bne $30, $0, skipstep2Player2
+noop
+noop
+noop
+noop
+noop
+jal checkInputsInLevel2Player2
+noop
+noop
+noop
+noop
+noop
+j skipstep2Player2
+noop
+noop
+noop
+noop
+noop
+
+
+skipstep2Player2:
+noop
+noop
+noop
+noop 
+noop
+jal moveArrowsPlayer1
+noop
+noop
+noop
+noop
+noop
+jal moveArrowsPlayer2
+noop
+noop
+noop
+noop
+noop
+j inLevel2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkInputsInLevel2Player1:
+noop
+noop
+noop
+noop
+noop
+addi $16, $0, 51 #h
+addi $17, $0, 1
+bne $16, $28, checkToScorePlayer1
+noop
+noop
+noop
+noop 
+noop
+addi $16, $0, 59 #j
+addi $17, $0, 2
+bne $16, $28, checkToScorePlayer1
+noop
+noop
+noop
+noop 
+noop
+addi $16, $0, 66 #k
+addi $17, $0, 3
+bne $16, $28, checkToScorePlayer1
+noop
+noop
+noop
+noop
+noop
+addi $16, $0, 75 #l
+addi $17, $0, 4
+bne $16, $28, checkToScorePlayer1
+noop
+noop
+noop
+noop
+noop
+j endInputCheck2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkInputsInLevel2Player2:
+noop
+noop
+noop
+noop
+noop
+addi $16, $0, 28 #a
+addi $17, $0, 1
+bne $16, $30, checkToScorePlayer2
+noop
+noop
+noop
+noop
+noop
+addi $16, $0, 27 #s
+addi $17, $0, 2
+bne $16, $30, checkToScorePlayer2
+noop
+noop
+noop
+noop
+noop
+addi $16, $0, 35 #d
+addi $17, $0, 3
+bne $16, $30, checkToScorePlayer2
+noop
+noop
+noop
+noop
+noop
+addi $16, $0, 43 #f
+addi $17, $0, 4
+bne $16, $30, checkToScorePlayer2
+noop
+noop
+noop
+noop
+noop
+j endInputCheck2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+endInputCheck2Player:
+addi $11, $0, 1
+addi $16, $0, 0
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkToScorePlayer1:
+addi $18, $0, 199
+addi $19, $0 ,300
+addi $20, $0, 65000
+addi $20, $20, 65000 #highest row allowing score
+addi $21, $0, 65000
+addi $21, $21, 65000
+addi $21, $21, 65000 #lowest row allowing score
+addi $28, $0, 0 #reset inputs
+j scoreSweepPlayer1
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkToScorePlayer2:
+addi $18, $0, 599
+addi $19, $0 ,700
+addi $20, $0, 65000
+addi $20, $20, 65000 #highest row allowing score
+addi $21, $0, 65000
+addi $21, $21, 65000
+addi $21, $21, 65000 #lowest row allowing score
+addi $30, $0, 0 #reset inputs
+j scoreSweepPlayer2
+noop
+noop
+noop
+noop
+noop
+
+
+
+scoreSweepPlayer1:
+addi $18, $18, 2
+noop
+noop
+noop
+noop
+noop
+lw $25, 0($18)
+lw $26, 1($18)
+noop
+noop
+noop
+noop
+noop
+bne $25, $0, scoreSweepPlayer1
+noop
+noop
+noop
+noop
+noop
+bne $17, $25, checkBoundsPlayer1
+noop
+noop
+noop
+noop
+noop
+blt $19, $18, endInputCheck2Player
+noop
+noop
+noop
+noop
+noop
+j scoreSweepPlayer1
+noop
+noop
+noop
+noop
+noop
+
+
+
+scoreSweepPlayer2:
+addi $18, $18, 2
+noop
+noop
+noop
+noop
+noop
+lw $25, 0($18)
+lw $26, 1($18)
+noop
+noop
+noop
+noop
+noop
+bne $25, $0, scoreSweepPlayer2
+noop
+noop
+noop
+noop
+noop
+bne $17, $25, checkBoundsPlayer2
+noop
+noop
+noop
+noop
+noop
+blt $19, $18, endInputCheck2Player
+noop
+noop
+noop
+noop
+noop
+j scoreSweepPlayer2
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkBoundsPlayer1:
+blt $26, $20, scoreSweepPlayer1 #arrow too high, fails
+noop
+noop
+noop
+noop
+noop
+blt $21, $26, scoreSweepPlayer1 #arrow too low, late and fails
+noop
+noop
+noop
+noop
+noop 
+addi $29, $29, 1 #increase score by 100 or whatnot
+sw $29, 900($0)
+addi $11, $0, 0
+addi $1, $0, 0
+addi $3, $26, 0
+sw $0, 0($18)
+sw $0, 1($18)
+noop
+noop 
+noop
+noop
+noop
+j draw
+noop
+noop
+noop
+noop
+noop
+
+
+
+checkBoundsPlayer2:
+blt $26, $20, scoreSweepPlayer2 #arrow too high, fails
+noop
+noop
+noop
+noop
+noop
+blt $21, $26, scoreSweepPlayer2 #arrow too low, late and fails
+noop
+noop
+noop
+noop
+noop 
+addi $14, $14, 1 #increase score by 100 or whatnot for player 2
+sw $14, 901($0)
+addi $11, $0, 0
+addi $1, $0, 0
+addi $3, $26, 0
+sw $0, 0($18)
+sw $0, 1($18)
+noop
+noop 
+noop
+noop
+noop 
+j draw
+noop
+noop
+noop
+noop
+noop
+
+
+
+sweepDrawPlayer1:
+addi $18, $0, 201 #sweepDraw entirely uses memory, and state of reg 15
+addi $19, $0, 300
+j sweep
+noop
+noop
+noop
+noop
+noop
+
+
+
+sweepDrawPlayer2:
+addi $18, $0, 601
+addi $19, $0, 700
+j sweep 
+noop
+noop
+noop
+noop
+noop
+
+
+
+moveArrowsPlayer1:
+addi $18, $0, 199
+addi $19, $0, 220 
+addi $20, $0, 64000 #setting max arrow location
+addi $20, $20, 64000
+addi $20, $20, 64000
+addi $20, $20, 6400
+j sweep2
+noop
+noop
+noop
+noop
+noop
+
+
+
+moveArrowsPlayer2:
+addi $18, $0, 599
+addi $19, $0, 700 
+addi $20, $0, 64000 #setting max arrow location
+addi $20, $20, 64000
+addi $20, $20,64000
+addi $20, $20, 6400
+j sweep2
+noop
+noop
+noop
+noop
+noop
+
+
+
+stall2Player: 
+noop
+noop
+noop
+noop
+noop
+addi $9, $9, 1
+noop
+noop
+noop
+noop
+noop
+blt $9, $10, stall2Player
+noop
+noop
+noop
+noop
+noop
+addi $9, $0, 0
+noop
+noop
+noop
+noop
+noop
+addi $6, $6, 1 #global variable, likely better to place in memory
+noop
+noop
+noop
+noop
+noop
+jr $31
+noop
+noop
+noop
+noop
+noop
+
+
+
+genArrows2Player:
+addi $20, $0, 400
+addi $24, $0, 500 #max stored arrow for gen in memory addr.
+j sweep32Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+sweep32Player:
+noop
+noop
+noop
+noop
+noop
+blt $24, $20, finishGen2Player #if past gen list
+noop
+noop
+noop
+noop
+noop
+lw $21, 0($20) #cycle count necessary to load
+noop
+noop
+noop
+noop
+noop
+lw $22, 1($20) #arrow type, if present
+noop
+noop
+noop
+noop
+noop
+addi $13,$0,1
+bne  $22,$13,set23left2Player
+noop
+noop
+noop
+noop
+noop
+addi $13, $0, 2
+bne $22, $13, set23up2Player
+noop
+noop
+noop
+noop
+noop
+addi $13, $0, 3
+bne $22, $13, set23down2Player
+noop
+noop
+noop
+noop
+noop
+addi $13, $0, 4
+bne $22, $13, set23right2Player
+noop
+noop
+noop
+noop
+noop
+j conttinue2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+set23left2Player:
+addi $23,$0,38090   #for player 1
+addi $13,$0,37810  	 #for player 2
+j conttinue2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+set23up2Player:
+addi $23,$0,38160        #for player 1
+addi $13,$0,37880  		 #for player 2
+j conttinue2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+set23down2Player:
+addi $23,$0,38230       #for player 1
+addi $13,$0,37950  		 #for player 2
+j conttinue2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+set23right2Player:
+addi $23,$0,38300        #for player 1
+addi $13,$0,38020   	 #for player 2
+j conttinue2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+conttinue2Player:
+noop
+noop
+noop
+noop
+noop
+bne $22, $0, nextArrowGen2Player #if no arrow here, will want next one
+noop
+noop
+noop
+noop
+noop
+blt $6, $21, nextArrowGen2Player #if cycle count not at time to gen, then skip for now
+noop #if we get here, then we are creating a new arrow
+noop
+noop
+noop
+noop
+addi $18, $0, 199 #reset so to not leave empty memory places
+noop
+noop
+noop
+noop
+noop
+addi $19, $0, 300
+j placeArrowInMemLoop2Player1
+noop
+noop
+noop
+noop
+noop
+
+
+
+placeArrowInMemLoop2Player1:
+noop
+noop
+noop
+noop
+noop
+addi $18, $18, 2 
+noop
+noop
+noop
+noop
+noop
+lw $25, 0($18)
+noop
+noop
+noop
+noop
+noop
+bne $25, $0, placeArrow2Player1 #might want to add a limiter just in case later but all good for now hopefully
+noop
+noop
+noop
+noop
+noop
+j placeArrowInMemLoop2Player1 #may want to insert out of bounds branch before this... 
+noop
+noop
+noop
+noop
+noop
+
+
+
+placeArrow2Player1:
+noop
+noop
+noop
+noop
+noop
+sw $22, 0($18) #place arrow type in active mem
+noop
+noop
+noop
+noop
+noop
+sw $23, 1($18) #place arrow loc in active mem
+noop
+noop
+noop
+noop
+noop
+addi $18, $0, 599
+addi $19, $0, 700
+j placeArrowInMemLoop2Player2
+noop
+noop
+noop
+noop
+noop
+
+
+
+placeArrowInMemLoop2Player2:
+noop
+noop
+noop
+noop
+noop
+addi $18, $18, 2 
+noop
+noop
+noop
+noop
+noop
+lw $25, 0($18)
+noop
+noop
+noop
+noop
+noop
+bne $25, $0, placeArrow2Player2 #might want to add a limiter just in case later but all good for now hopefully
+noop
+noop
+noop
+noop
+noop
+j placeArrowInMemLoop2Player2 #may want to insert out of bounds branch before this... 
+noop
+noop
+noop
+noop
+noop
+
+
+
+placeArrow2Player2:
+noop
+noop
+noop
+noop
+noop
+sw $22, 0($18) #place arrow type in active mem
+noop
+noop
+noop
+noop
+noop
+sw $13, 1($18) #place arrow loc in active mem
+noop
+noop
+noop
+noop
+noop
+sw $0, 0($20) #remove arrow in pregen list
+noop
+noop
+noop
+noop
+noop
+sw $0, 1($20) #remove arrow in pregen list
+noop
+noop
+noop
+noop
+noop
+sw $0, 2($20) #remove arrow in pregen list
+j finishGen2Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+finishGen2Player:
+addi $21,$0,0
+addi $22,$0,0
+addi $23,$0,0
+addi $18, $0, 0
+addi $19, $0, 0
+noop
+noop
+noop
+noop
+noop
+jr $31 #if last arrow checked was gen'd
+noop
+noop
+noop
+noop
+noop
+
+
+
+nextArrowGen2Player:
+noop
+noop
+noop
+noop
+noop
+addi $20, $20, 3
+noop
+noop
+noop
+noop
+noop
+j sweep32Player
+noop
+noop
+noop
+noop
+noop
+
+
+
+initArrowListInMem:
+addi $25, $0, 10 #initial cycle to appear
+addi $26, $0, 1 #arrow type
+sw $25, 400($0)
+sw $26, 401($0)
+addi $25, $0, 70
+addi $26, $0, 2
+sw $25, 406($0)
+sw $26, 407($0)
+addi $25, $0, 130
+addi $26, $0, 1
+sw $25, 412($0)
+sw $26, 413($0)
+addi $25, $0, 190
+addi $26, $0, 3
+sw $25, 418($0)
+sw $26, 419($0)
+addi $25, $0, 250
+addi $26, $0, 4
+sw $25, 424($0)
+sw $26, 425($0)
+addi $25, $0, 310
+addi $26, $0, 2
+
+
+
+addi $25, $0, 330 #initial cycle to appear
+addi $26, $0, 1 #arrow type
+sw $25, 430($0)
+sw $26, 431($0)
+addi $25, $0, 380
+addi $26, $0, 2
+sw $25, 436($0)
+sw $26, 437($0)
+addi $25, $0, 410
+addi $26, $0, 3
+sw $25, 442($0)
+sw $26, 443($0)
+addi $25, $0, 445
+addi $26, $0, 4
+sw $25, 448($0)
+sw $26, 449($0)
+addi $25, $0, 490
+addi $26, $0, 4
+sw $25, 454($0)
+sw $26, 455($0)
+addi $25, $0, 10000
+addi $26, $0, 2
+sw $25, 460($0)
+sw $26, 461($0)
+
+
+
+sw $0, 900($0) #reset score
+sw $0, 901($0)
+addi $14, $0, 0
+addi $29, $0, 0
+j menu
+noop
+noop
+noop
+noop
+noop
+
+
+
+initScanCodes:
+addi $28, $0, 0 #will store scan code for valid key inputs #key codes stored in memory 800-899, 800 left, 801 up, 802 right, 803 down
+addi $16, $0, 51 #h
+sw $16, 800($0)
+addi $16, $0, 59 #j
+sw $16, 801($0)
+addi $16, $0, 66 #k
+sw $16, 802($0)
+addi $16, $0, 75 #l
+sw $16, 803($0)
+addi $16, $0, 44 #t, start from menu, used
+sw $16, 804($0)
+addi $16, $0, 22 #1, set slow speed in menu, used
+sw $16, 805($0)
+addi $16, $0, 30 #2, set slow speed in menu, used
+sw $16, 806($0)
+addi $16, $0, 38 #3, set slow speed in menu, used
+sw $16, 807($0)
+addi $16, $0, 28 #a, compare to another reg, not 28
+sw $16, 808($0)
+addi $16, $0, 27 #s, compare to another reg, not 28
+sw $16, 809($0)
+addi $16, $0, 35 #d, compare to another reg, not 28
+sw $16, 810($0)
+addi $16, $0, 43 #f, compare to another reg, not 28
+sw $16, 811($0)
+addi $16, $0, 45 #r, reset from anywhere, NEED IN TWO PLAYER!!!
+sw $16, 812($0)
+addi $16, $0, 77 #p, pause from in game, NEED IN TWO PLAYER!!!
+sw $16, 813($0)
+addi $16, $0, 37 #4, set 1 player in menu, used
+sw $16, 814($0)
+addi $16, $0, 46 #5, set 2 player in menu, used
+sw $16, 815($0)
+addi $16, $0, 0
+j initArrowListInMem
 noop
 noop
 noop
