@@ -7,8 +7,8 @@ addi $6, $0, 0
 addi $10, $0, 6500 #65000
 sll $10, $10, 2 #around 1 million now
 addi $9, $9, 0
-addi $29,$0, 1
-addi $14,$0, 1
+addi $29,$0, 0
+addi $14,$0, 0
 addi $11, $0, 1
 
 
@@ -192,6 +192,8 @@ addi $6, $0, 0 #reset cycle count
 addi $10, $0, 10000 #set default speed of game on rest
 sll $10, $10, 1 #standard, normal delay 
 addi $12, $0, 0 #set 1 player mode on reset
+addi $29, $0, 0
+addi $14, $0, 0
 j clearCurrentArrowsInMem
 noop
 noop
@@ -267,21 +269,21 @@ noop
 
 setSpeed:
 sw $31, 1337($0) #just some hidden spot, who dares to use it
-lw $16, 805($0)
+addi $16, $0, 22
 bne $16, $28, setSlow
 noop
 noop
 noop
 noop
 noop
-lw $16, 806($0)
+addi $16, $0, 30
 bne $16, $28, setMedium
 noop
 noop
 noop
 noop
 noop
-lw $16, 807($0)
+addi $16, $0, 38
 bne $16, $28, setFast
 noop
 noop
@@ -1698,8 +1700,18 @@ noop
 
 scoreSweepPlayer1:
 addi $18, $18, 2
+noop
+noop
+noop
+noop
+noop
 lw $25, 0($18)
 lw $26, 1($18)
+noop
+noop
+noop
+noop
+noop
 bne $25, $0, scoreSweepPlayer1
 noop
 noop
@@ -1729,8 +1741,18 @@ noop
 
 scoreSweepPlayer2:
 addi $18, $18, 2
+noop
+noop
+noop
+noop
+noop
 lw $25, 0($18)
 lw $26, 1($18)
+noop
+noop
+noop
+noop
+noop
 bne $25, $0, scoreSweepPlayer2
 noop
 noop
@@ -1995,7 +2017,7 @@ noop
 
 
 set23left2Player:
-addi $23,$0,38140    #for player 1
+addi $23,$0,38140   #for player 1
 addi $13,$0,37810  	 #for player 2
 j conttinue2Player
 noop
@@ -2007,8 +2029,8 @@ noop
 
 
 set23up2Player:
-addi $23,$0,37880        #for player 1
-addi $13,$0,38210  		 #for player 2
+addi $23,$0,38210        #for player 1
+addi $13,$0,37880  		 #for player 2
 j conttinue2Player
 noop
 noop
@@ -2019,8 +2041,8 @@ noop
 
 
 set23down2Player:
-addi $23,$0,37950        #for player 1
-addi $13,$0,38280  		 #for player 2
+addi $23,$0,38280       #for player 1
+addi $13,$0,37950  		 #for player 2
 j conttinue2Player
 noop
 noop
@@ -2031,8 +2053,8 @@ noop
 
 
 set23right2Player:
-addi $23,$0,38020        #for player 1
-addi $13,$0,38350  		 #for player 2
+addi $23,$0,38350        #for player 1
+addi $13,$0,38020   	 #for player 2
 j conttinue2Player
 noop
 noop
@@ -2183,7 +2205,7 @@ noop
 noop
 noop
 noop
-sw $23, 1($18) #place arrow loc in active mem
+sw $13, 1($18) #place arrow loc in active mem
 noop
 noop
 noop
